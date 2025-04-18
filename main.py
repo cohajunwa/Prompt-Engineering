@@ -7,6 +7,8 @@ from openai import OpenAI
 load_dotenv()
 
 GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
+PROMPTS_DIR = 'prompts'
+RESPONSES_DIR = 'responses'
 
 def generate_response(model, prompt):
     """
@@ -33,35 +35,49 @@ def generate_response(model, prompt):
 
     return response.choices[0].message.content
 
-def generate_and_compare_responses(model1, model2, prompt):
+def load_prompt(prompt_file):
     """
-    Inputs the same prompt into two different models (model1 and model2), generates outputs,
-    and performs comparative analysis using various metrics
-    
+    Reads prompt_file to retrieve prompt
+
     Args:
-        model1 (str): Name of first model
-        model2 (str): Name of second model
-        prompt (str): Prompt
-
-    Output:
-        model1_response (str): Response from first model
-        model2_response (str): Response from second model
-        scores (dict): --
+        prompt_file (str): File path to prompt
     """
-
-    model1_response = generate_response(model1, prompt)
-    model2_response = generate_response(model2, prompt)
-
-    print(f"Model 1 ({model1}) Response:")
-    print(model1_response)
-
-    print(f"Model 2 ({model2}) Response:")
-    print(model2_response)
-
-if __name__ == '__main__':
-    with open('prompt.txt', 'r') as f:
+    with open(prompt_file, 'r') as f:
         prompt = f.read()
 
-    with open('response.txt', 'w') as f:
-        f.write(generate_response('gpt-4o-mini', prompt))
+    return prompt
+
+def run(prompt_file):
+    """
+    Workflow for processing prompt file and saving the model's response in a file
+
+    Args:
+        prompt_file (str): File path to prompt
+    """
+    
+    prompt = load_prompt(prompt_file)
+    task_name = os.path.splitext(os.path.basename(prompt_file))[0] # Retrieve name of prompt
+
+    models = ['gpt-4o-mini', 'Codestral-2501']
+    
+    for model in models:
+        response = generate_response(model, prompt)
+        response_path = os.path.join(RESPONSES_DIR, f"{task_name}-{model}.txt")
+        
+        with open(response_path, 'w') as f:
+            f.write(response)
+            print(f"Saving {model} response to {task_name} in {response_path}")
+
+
+if __name__ == '__main__':
+    if not os.path.exists(PROMPTS_DIR):
+        print("Prompt directory does not exist! Terminating run.")
+        sys.exit(1)
+    
+    if not os.path.exists(RESPONSES_DIR):
+        os.makedirs(RESPONSES_DIR)
+
+    for prompt_file in os.listdir(PROMPTS_DIR):
+        if prompt_file.endswith('.txt'):
+            run(os.path.join(PROMPTS_DIR, prompt_file))
 
