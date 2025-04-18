@@ -12,7 +12,7 @@ GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
 PROMPTS_DIR = 'prompts'
 RESPONSES_DIR = 'responses'
 
-def generate_response(model, prompt):
+def generate_response(model, prompt, client):
     """
     Generates model output from given prompt
     
@@ -23,11 +23,6 @@ def generate_response(model, prompt):
     Returns:
         response (str)
     """
-    client = OpenAI(
-        base_url = "https://models.inference.ai.azure.com",
-        api_key = GITHUB_TOKEN,
-    )
-
     response = client.chat.completions.create(
         model = model,
         messages = [{"role": "user","content": prompt}],
@@ -37,8 +32,8 @@ def generate_response(model, prompt):
 
     return response.choices[0].message.content
 
-def generate_all_responses(models, prompt):
-    return {model: generate_response(model, prompt) for model in models}
+def generate_all_responses(models, prompt, client):
+    return {model: generate_response(model, prompt, client) for model in models}
 
 def get_bleu_4_score(response_1, response_2):
   return sacrebleu.corpus_bleu([response_1], [[response_2]]).score
@@ -69,7 +64,7 @@ def save_responses(task_name, responses):
             f.write(response)
         print(f"Saved response for {model} to {file_path}")
 
-def run(prompt_file, models):
+def run(prompt_file, models, client):
     """
     Workflow for processing prompt file and saving the models' responses in a file
 
@@ -81,7 +76,7 @@ def run(prompt_file, models):
     prompt = load_prompt(prompt_file)
     task_name = os.path.splitext(os.path.basename(prompt_file))[0] # Retrieve name of prompt
     
-    responses = generate_all_responses(models, prompt)
+    responses = generate_all_responses(models, prompt, client)
     save_responses(task_name, responses)
 
     bleu_score = compute_bleu_between_models(responses)
@@ -96,11 +91,16 @@ if __name__ == '__main__':
     if not os.path.exists(RESPONSES_DIR):
         os.makedirs(RESPONSES_DIR)
 
+    client = OpenAI(
+        base_url = "https://models.inference.ai.azure.com",
+        api_key = GITHUB_TOKEN,
+    )
+
     models = ['gpt-4o-mini', 'Codestral-2501']
     scores = {}
     for prompt_file in os.listdir(PROMPTS_DIR):
         if prompt_file.endswith('.txt'):
-            task_name, score = run(os.path.join(PROMPTS_DIR, prompt_file), models)
+            task_name, score = run(os.path.join(PROMPTS_DIR, prompt_file), models, client)
             scores[task_name] = score
 
     with open('scores.json', 'w') as f:
