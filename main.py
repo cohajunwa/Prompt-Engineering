@@ -1,4 +1,6 @@
+import json
 import os
+import sacrebleu
 import sys
 
 from dotenv import load_dotenv
@@ -35,6 +37,19 @@ def generate_response(model, prompt):
 
     return response.choices[0].message.content
 
+def generate_all_responses(models, prompt):
+    return {model: generate_response(model, prompt) for model in models}
+
+def get_bleu_4_score(response_1, response_2):
+  return sacrebleu.corpus_bleu([response_1], [[response_2]]).score
+
+def compute_bleu_between_models(responses):
+    models = list(responses.keys())
+    if len(models) != 2:
+        raise ValueError("Expected exactly two model responses for BLEU computation.")
+    
+    return get_bleu_4_score(responses[models[0]], responses[models[1]])
+
 def load_prompt(prompt_file):
     """
     Reads prompt_file to retrieve prompt
@@ -47,27 +62,31 @@ def load_prompt(prompt_file):
 
     return prompt
 
-def run(prompt_file):
+def save_responses(task_name, responses):
+    for model, response in responses.items():
+        file_path = os.path.join(RESPONSES_DIR, f"{task_name}-{model}.txt")
+        with open(file_path, 'w') as f:
+            f.write(response)
+        print(f"Saved response for {model} to {file_path}")
+
+def run(prompt_file, models):
     """
-    Workflow for processing prompt file and saving the model's response in a file
+    Workflow for processing prompt file and saving the models' responses in a file
 
     Args:
         prompt_file (str): File path to prompt
+        models (list[str]): List of models
     """
     
     prompt = load_prompt(prompt_file)
     task_name = os.path.splitext(os.path.basename(prompt_file))[0] # Retrieve name of prompt
-
-    models = ['gpt-4o-mini', 'Codestral-2501']
     
-    for model in models:
-        response = generate_response(model, prompt)
-        response_path = os.path.join(RESPONSES_DIR, f"{task_name}-{model}.txt")
-        
-        with open(response_path, 'w') as f:
-            f.write(response)
-            print(f"Saving {model} response to {task_name} in {response_path}")
+    responses = generate_all_responses(models, prompt)
+    save_responses(task_name, responses)
 
+    bleu_score = compute_bleu_between_models(responses)
+
+    return task_name, bleu_score
 
 if __name__ == '__main__':
     if not os.path.exists(PROMPTS_DIR):
@@ -77,7 +96,14 @@ if __name__ == '__main__':
     if not os.path.exists(RESPONSES_DIR):
         os.makedirs(RESPONSES_DIR)
 
+    models = ['gpt-4o-mini', 'Codestral-2501']
+    scores = {}
     for prompt_file in os.listdir(PROMPTS_DIR):
         if prompt_file.endswith('.txt'):
-            run(os.path.join(PROMPTS_DIR, prompt_file))
+            task_name, score = run(os.path.join(PROMPTS_DIR, prompt_file), models)
+            scores[task_name] = score
+
+    with open('scores.json', 'w') as f:
+        json.dump(scores, f, indent=4)
+
 
