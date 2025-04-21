@@ -1,0 +1,10 @@
+{
+    "task_name": "task10",
+    "strategy": "few_shot",
+    "gpt-4o-mini_output": [
+        "Summary: This function takes a sentence as input and returns the sentence with its words reversed."
+    ],
+    "Codestral-2501_output": [
+        "Summary: This function takes a sentence as input and returns the sentence with the words reversed, but the order of characters within each word remains unchanged."
+    ]
+}

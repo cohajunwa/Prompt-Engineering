@@ -1,0 +1,10 @@
+{
+    "task_name": "task20",
+    "strategy": "few_shot",
+    "gpt-4o-mini_output": [
+        "# Output:\n```python\ndef calculate_average(scores): \n    total = sum(scores)\n    average = total / len(scores) if scores else 0\n    return average\n```"
+    ],
+    "Codestral-2501_output": [
+        "To complete the function based on the intent, you need to calculate the average of the scores. Here is the completed function:\n\n```python\ndef calculate_average(scores):\n    total = 0\n    for score in scores:\n        total += score\n    return total / len(scores)\n```\n\nThis function iterates over the scores, adds them up to the `total`, and then returns the average by dividing the `total` by the number of scores (`len(scores)`)."
+    ]
+}

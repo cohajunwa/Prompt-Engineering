@@ -1,0 +1,10 @@
+{
+    "task_name": "task15",
+    "strategy": "zero_shot",
+    "gpt-4o-mini_output": [
+        "To complete the class constructor for the `Person` class, you can define parameters for `name`, `age`, and an optional `email`. Here\u2019s how you can do that:\n\n```python\nclass Person:\n    def __init__(self, name, age, email=None):\n        self.name = name\n        self.age = age\n        self.email = email\n```\n\n### Explanation:\n- `name` and `age` are required parameters, so they are passed directly to the constructor.\n- `email` is an optional parameter with a default value of `None`. This means that if no email is provided when creating an instance of `Person`, `self.email` will be set to `None`.\n\n### Example Usage:\n```python\nperson1 = Person(\"Alice\", 30, \"alice@example.com\")\nperson2 = Person(\"Bob\", 25)  # email is optional\n\nprint(person1.name, person1.age, person1.email)  # Output: Alice 30 alice@example.com\nprint(person2.name, person2.age, person2.email)  # Output: Bob 25 None\n```"
+    ],
+    "Codestral-2501_output": [
+        "To complete the class constructor for the `Person` class, you need to add parameters for the `name`, `age`, and an optional `email`. Here's how you can do it:\n\n```python\nclass Person:\n    def __init__(self, name, age, email=None):\n        self.name = name\n        self.age = age\n        self.email = email\n\n# Example usage:\n# person1 = Person(\"Alice\", 30)\n# person2 = Person(\"Bob\", 25, \"bob@example.com\")\n```\n\nIn this implementation:\n- `name` and `age` are required parameters.\n- `email` is an optional parameter with a default value of `None`.\n\nThis way, when creating an instance of the `Person` class, you can provide values for `name` and `age`, and optionally provide an `email`."
+    ]
+}
