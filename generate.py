@@ -157,12 +157,16 @@ def run_multiple_prompts(strategy, task_name, prompt_files, models, client):
 
     elif strategy == "prompt_chaining":
         for model in models:
+            messages = [{"role": "system", "content": "You are a helpful coding assistant."}]
             chained_outputs = []
-            messages = []
             for prompt_file in prompt_files:
                 prompt = load_prompt(prompt_file)
+
                 messages.append({"role": "user","content": prompt})
+
                 output = generate_response(model, messages, client)
+                messages.append({"role": "assistant", "content": output})
+                
                 chained_outputs.append(output)
 
             responses[f"{model}_output"] = chained_outputs
