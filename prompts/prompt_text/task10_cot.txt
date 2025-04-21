@@ -1,0 +1,4 @@
+Reason about the following function step-by-step. Then, provide a brief summary of the function:
+
+def reverse_words(sentence): 
+    return ''. join(sentence.split()[:: -1])

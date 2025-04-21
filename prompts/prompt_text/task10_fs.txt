@@ -1,0 +1,22 @@
+Here's some summaries for simple functions:
+
+Example 1:
+#Code
+def add(x, y):
+	return x + y
+
+Summary: This function adds two numbers together.
+
+Example 2:
+#Code
+def index_of_element(str_list, target_string):
+	if target_str in str_list:
+		return str_list.index(target_str)
+	else:
+		return -1
+
+Summary: Given a list of strings and a target string, this function returns the index of the first occurrence of the target string if it exists. Otherwise, it returns -1.
+
+Now, consider the following function and provide a brief summary:
+def reverse_words(sentence): 
+    return ''. join(sentence.split()[:: -1])

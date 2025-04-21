@@ -1,0 +1,29 @@
+
+Here are some examples of endpoints:
+#Example 1:
+from flask import Flask, jsonify 
+
+app = Flask (__name__) 
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p>"
+
+#Example 2:
+from flask import Flask, jsonify 
+
+app = Flask (__name__) 
+@app.route('/health')
+def health():
+    return 'loadserver is healthy\n', 200
+
+
+Now, create a ‘/greet/‘ endpoint that returns a JSON greeting: 
+
+from flask import Flask, jsonify 
+
+app = Flask (__name__) 
+@app.route ('/greet/<username>') 
+def greet (username): 
+    # TODO  Return a JSON greeting 
+    pass
+

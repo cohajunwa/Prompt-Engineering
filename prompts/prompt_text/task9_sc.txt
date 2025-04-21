@@ -1,0 +1,4 @@
+Convert the data class to a REST API using Ktor:
+
+data class Product(val id: Int, val name: String, val price: Double) 
+// TODO: Create GET and POST endpoints using Ktor

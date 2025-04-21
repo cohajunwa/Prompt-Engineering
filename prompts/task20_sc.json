@@ -1,0 +1,7 @@
+{
+    "task_name": "task20",
+    "strategy": "self_consistency",
+    "prompt_files": [
+        "prompt_text/task20_sc.txt"
+    ]
+}

@@ -1,0 +1,5 @@
+Consider the following function and identify where the inconsistency occurs between the function name and the logic
+// Supposed to return true if x is even 
+bool isOdd (int x) { 
+    return x % 2 == 0; 
+}

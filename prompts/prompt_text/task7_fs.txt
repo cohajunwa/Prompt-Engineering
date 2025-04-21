@@ -1,0 +1,19 @@
+Consider the following examples of null dereference risks:
+Example 1:
+public int getFirstElement(int arr[]){
+	return arr[0]; 
+}
+
+If arr is null when passed to the method, then we have a null dereference when we call arr[0].
+
+Example 2:
+public int addThirdElement(int arr1[], int arr2[]){
+	return arr1[2] + arr2[2];
+}
+
+If either arr1 or arr2 is null when passed to the method, then we have a null dereference.
+
+Now, consider the following method. Identify any null dereference risk:
+public int getLength(String s) {
+    return s.length();
+} 

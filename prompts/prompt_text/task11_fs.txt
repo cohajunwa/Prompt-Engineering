@@ -1,0 +1,14 @@
+Here's some examples of code generated based on code comments
+
+Example 1:
+# This function checks if a number is even
+def is_even(n):
+	return n % 2 == 0
+
+Example 2:
+# This function checks if a number is divisible by 10
+def is_multiple_of_ten(n):
+	return n % 10 == 0
+
+Given the following comment, generate the function:
+# This function checks if a number is prime

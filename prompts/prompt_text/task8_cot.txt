@@ -1,0 +1,4 @@
+Improve the parser to support quoted fields. Do it step-by-step:
+
+def parse_csv_line(line):
+    return line.split(',') # Incomplete: doesn’t handle quoted fields

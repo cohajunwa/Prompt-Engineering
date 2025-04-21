@@ -1,0 +1,7 @@
+{
+    "task_name": "task2",
+    "strategy": "chain_of_thought",
+    "prompt_files": [
+        "prompt_text/task2_cot.txt"
+    ]
+}

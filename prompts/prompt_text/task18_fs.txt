@@ -1,0 +1,27 @@
+Consider the following examples of bug fixes:
+Example 1:
+// Buggy Code
+function multiply(n1, n2){
+	return n1 + n2; // Bug: Returns the sum of two numbers instead of the product
+}
+
+// Fixed Code
+function multiply(n1, n2){
+	return n1 * n2;
+}
+
+Example 2:
+// Buggy Code
+function modulo(a, b){
+	return a%b == 0; // Bug: Returns True/False instead of a mod b
+}
+
+// Fixed Code
+function modulo(a, b){
+	return a%b;
+}
+
+Now, consider the following function. Identify and fix the bug:
+function isEven(n) { 
+    return n % 2; // Returns 1 or 0, not true / false 
+}

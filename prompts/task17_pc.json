@@ -1,0 +1,8 @@
+{
+    "task_name": "task17",
+    "strategy": "prompt_chaining",
+    "prompt_files": [
+        "prompt_text/task17_pc_1.txt",
+        "prompt_text/task17_pc_2.txt"
+    ]
+}

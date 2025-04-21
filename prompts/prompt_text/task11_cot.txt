@@ -1,0 +1,2 @@
+Given the following comment, generate the function. Do it step-by-step:
+# This function checks if a number is prime

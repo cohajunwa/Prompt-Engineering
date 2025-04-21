@@ -1,0 +1,29 @@
+Here are a few examples of function completion based on intent:
+Example 1:
+# Input:
+def calculate_sum(scores):
+	total = 0
+	# TODO: Complete to return sum
+	pass
+
+# Output:
+def calculate_sum(scores):
+	total = 0
+	for score in scores:
+		total += score
+	return sum
+
+Example 2:
+# Input:
+def get_maximum(scores):
+	# TODO: Return maximum score
+
+# Output:
+def get_maximum(scores):
+	return max(scores)
+
+Complete the function based on intent:
+# Input:
+def calculate_average(scores): 
+    total = 0 # TODO: Complete to return average 
+    pass

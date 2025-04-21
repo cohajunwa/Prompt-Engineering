@@ -1,0 +1,5 @@
+Decompose the high-level comment/summary into logical steps. Do it step-by-step:
+// Function that validates an input, calculates square, and returns result 
+int process (int x) {
+    if (x < 0) return -1; return x * x; 
+}

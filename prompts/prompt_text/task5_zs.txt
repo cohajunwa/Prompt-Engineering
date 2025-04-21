@@ -1,0 +1,9 @@
+Create a ‘/greet/‘ endpoint that returns a JSON greeting: 
+
+from flask import Flask, jsonify 
+
+app = Flask (__name__) 
+@app.route (‘/greet/<username>’) 
+def greet (username): 
+    # TODO  Return a JSON greeting 
+    pass

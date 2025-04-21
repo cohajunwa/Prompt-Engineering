@@ -1,0 +1,6 @@
+Classify the type of bug in the following C++ function:
+
+int * getArray(int size){ 
+    int arr [size]; // Warning: local array 
+    return arr; // Bug: returning pointer to local variable
+}

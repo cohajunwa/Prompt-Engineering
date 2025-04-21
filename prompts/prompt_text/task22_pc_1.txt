@@ -1,0 +1,31 @@
+Identify what’s wrong with the following script:
+
+# file_processor.py - Incomplete script for processing text files 
+
+import string 
+
+def load_file(filepath): 
+    with open(filepath, 'r') as f: 
+        return f.readlines() 
+
+def clean_line(line): 
+    # TODO: Remove punctuation and make lowercase 
+    pass 
+
+def count_words(lines): 
+    word_counts = {} 
+    for line in lines: 
+    clean = clean_line(line) 
+    for word in clean.split(): 
+        word_counts[word] = word_counts.get(word, 0) + 1 
+    return word_counts 
+
+def main():
+    filepath = 'input.txt' 
+    lines = load_file(filepath) 
+    counts = count_words(lines) 
+    for word, count in sorted(counts.items()): 
+        print (f"{ word }: { count }") 
+
+if __name__ == ’__main__ ’:
+    main()

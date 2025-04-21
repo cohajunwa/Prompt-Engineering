@@ -1,0 +1,4 @@
+Identify the bug:
+function isEven(n) { 
+    return n % 2; // Returns 1 or 0, not true / false 
+}

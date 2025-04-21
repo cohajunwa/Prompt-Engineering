@@ -1,0 +1,3 @@
+Write the schema for a review app with users, books, and reviews:
+-- TODO: Design schema with appropriate keys and constraints
+-- Tables: users(id, name), books (id, title), reviews (id, user_id, book_id, rating) 

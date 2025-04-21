@@ -1,0 +1,26 @@
+Consider the following examples where there are inconsistencies between the function name and logic:
+//Buggy Code
+int sum(int x, int y){
+	return x - y; // Logic contradictions function name
+}
+
+//Fix:
+int sum(int x, int y){
+	return x + y; // Fix
+}
+
+//Buggy Code:
+int avg(int x, int y){
+	return x + y; // Logic contradictions function name
+}
+
+//Fix:
+double avg(int x, int y){
+	return (x + y)/2; // Fix
+}
+
+Now, resolve the inconsistency between the function name and logic in the following function:
+// Supposed to return true if x is even 
+bool isOdd (int x) { 
+return x % 2 == 0; // Logic contradicts function name 
+}

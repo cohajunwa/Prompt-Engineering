@@ -1,0 +1,7 @@
+{
+    "task_name": "task21",
+    "strategy": "zero_shot",
+    "prompt_files": [
+        "prompt_text/task21_zs.txt"
+    ]
+}

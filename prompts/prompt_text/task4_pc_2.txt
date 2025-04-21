@@ -1,0 +1,5 @@
+Given the regex expression, complete the following function to validate basic email addresses:
+
+def is_valid_email (email): 
+    # TODO: Complete using regex 
+    pass

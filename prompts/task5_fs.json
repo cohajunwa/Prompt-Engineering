@@ -1,0 +1,7 @@
+{
+    "task_name": "task5",
+    "strategy": "few_shot",
+    "prompt_files": [
+        "prompt_text/task5_fs.txt"
+    ]
+}

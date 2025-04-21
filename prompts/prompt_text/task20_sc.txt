@@ -1,0 +1,4 @@
+Complete the function based on intent:
+def calculate_average(scores): 
+    total = 0 # TODO: Complete to return average 
+    pass

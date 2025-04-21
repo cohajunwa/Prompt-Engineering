@@ -1,0 +1,22 @@
+Analyze the following utility script. Identify any potential logic issues or design flaws. Then, refactor it for better readability, correctness, and safety.
+
+# utils.py - Script to parse and summarize numeric CSV files 
+
+import csv 
+
+def read_csv(filepath): 
+    with open(filepath , 'r') as f: 
+    return [row for row in csv.reader(f)] 
+def summarize_column(data, index): 
+    values = [float(row[index]) for row in data [1:]] # skip header 
+    total = sum(values) 
+    avg = total / len (values) 
+    return total, avg 
+def main(): 
+    filepath = ’data .csv ’ 
+    data = read_csv(filepath) 
+    total, avg = summarize_column(data, 1) 
+    print("Total :", total) 
+    print("Average :", avg) 
+if __name__ == '__main__ ': 
+    main()

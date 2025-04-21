@@ -1,0 +1,1 @@
+Write a regex expression to validate basic email addresses.
