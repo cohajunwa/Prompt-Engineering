@@ -1,6 +1,5 @@
 import json
 import os
-import sacrebleu
 import sys
 
 from dotenv import load_dotenv
@@ -35,15 +34,7 @@ def generate_response(model, prompt, client):
 def generate_all_responses(models, prompt, client):
     return {model: generate_response(model, prompt, client) for model in models}
 
-def get_bleu_4_score(response_1, response_2):
-  return sacrebleu.corpus_bleu([response_1], [[response_2]]).score
 
-def compute_bleu_between_models(responses):
-    models = list(responses.keys())
-    if len(models) != 2:
-        raise ValueError("Expected exactly two model responses for BLEU computation.")
-    
-    return get_bleu_4_score(responses[models[0]], responses[models[1]])
 
 def load_prompt(prompt_file):
     """
@@ -79,9 +70,7 @@ def run(prompt_file, models, client):
     responses = generate_all_responses(models, prompt, client)
     save_responses(task_name, responses)
 
-    bleu_score = compute_bleu_between_models(responses)
-
-    return task_name, bleu_score
+    return task_name
 
 if __name__ == '__main__':
     if not os.path.exists(PROMPTS_DIR):
@@ -97,13 +86,13 @@ if __name__ == '__main__':
     )
 
     models = ['gpt-4o-mini', 'Codestral-2501']
-    scores = {}
+    # scores = {}
     for prompt_file in os.listdir(PROMPTS_DIR):
         if prompt_file.endswith('.txt'):
             task_name, score = run(os.path.join(PROMPTS_DIR, prompt_file), models, client)
-            scores[task_name] = score
+            # scores[task_name] = score
 
-    with open('scores.json', 'w') as f:
-        json.dump(scores, f, indent=4)
+    # with open('scores.json', 'w') as f:
+    #     json.dump(scores, f, indent=4)
 
 
