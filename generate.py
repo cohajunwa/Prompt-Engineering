@@ -44,13 +44,6 @@ def load_prompt(prompt_file):
 
     return prompt
 
-# def save_responses(task_name, responses):
-#     for model, response in responses.items():
-#         file_path = os.path.join(RESPONSES_DIR, f"{task_name}-{model}.txt")
-#         with open(file_path, 'w') as f:
-#             f.write(response)
-#         print(f"Saved response for {model} to {file_path}")
-
 def parse_json_file(json_file):
     """Reads JSON file and returns strategy, task name, and prompt files
     Args:
@@ -85,6 +78,25 @@ def parse_json_file(json_file):
 
     return data["strategy"], data["task_name"], data["prompt_files"]
 
+def save_responses(responses):
+    """
+    Saves models' response data into JSON file
+    Args:
+        responses (dict): Dictionary consisting of task name, strategy, and model outputs
+    Output:
+        Saved JSON file with model responses
+    """
+
+    strategy_codes = {"self_consistency": "sc", 
+                    "prompt_chaining": "pc", 
+                    "zero_shot": "zs", 
+                    "few_shot": "fs", 
+                    "chain_of_thought": "cot"}
+    
+    output_file = os.path.join(RESPONSES_DIR, f"{responses[task_name]}_{strategy_codes[responses[strategy]]}_responses.json")
+    print(f"Saving model reponses to {output_file}")
+    with open(output_file, 'w') as file:
+        json.dump(responses, file, indent=4)
 
 def run_single_prompt(strategy, task_name, prompt_files, models, client):
     """
@@ -99,8 +111,6 @@ def run_single_prompt(strategy, task_name, prompt_files, models, client):
         client 
     Returns:
         responses (dict): Dictionary consisting of task name, strategy, and model outputs
-    Output:
-        Saved JSON file with model responses
     """
 
     if len(prompt_files) != 1:
@@ -114,12 +124,7 @@ def run_single_prompt(strategy, task_name, prompt_files, models, client):
     for model in models:
         responses[f"{model}_output"] = [generate_response(model, messages, client)]
 
-    strategy_codes = {"zero_shot": "zs", "few_shot": "fs", "chain_of_thought": "cot"}
-
-    output_file = os.path.join(RESPONSES_DIR, f"{task_name}_{strategy_codes[strategy]}_responses.json")
-    print(f"Saving model reponses to {output_file}")
-    with open(output_file, 'w') as file:
-        json.dump(responses, file, indent=4)
+    return responses
     
 def run_multiple_prompts(strategy, task_name, prompt_files, models, client):
     """
@@ -137,8 +142,6 @@ def run_multiple_prompts(strategy, task_name, prompt_files, models, client):
         client 
     Returns:
         responses (dict): Dictionary consisting of task name, strategy, and model outputs
-    Output:
-        Saved JSON file with model responses
     """
 
     responses = {"task_name": task_name, "strategy": strategy}
@@ -166,17 +169,13 @@ def run_multiple_prompts(strategy, task_name, prompt_files, models, client):
 
                 output = generate_response(model, messages, client)
                 messages.append({"role": "assistant", "content": output})
-                
+
                 chained_outputs.append(output)
 
             responses[f"{model}_output"] = chained_outputs
 
     
-    strategy_codes = {"self_consistency": "sc", "prompt_chaining": "pc"}
-    output_file = os.path.join(RESPONSES_DIR, f"{task_name}_{strategy_codes[strategy]}_responses.json")
-    print(f"Saving model reponses to {output_file}")
-    with open(output_file, 'w') as file:
-        json.dump(responses, file, indent=4) 
+    return responses
 
 
 def run(task_file, models, client):
@@ -200,10 +199,11 @@ def run(task_file, models, client):
         return
 
     if strategy == "zero_shot" or strategy == "few_shot" or strategy == "chain_of_thought":
-        run_single_prompt(strategy, task_name, prompt_files, models, client)
+        responses = run_single_prompt(strategy, task_name, prompt_files, models, client)
     elif strategy == "self_consistency" or strategy == "prompt_chaining":
-        run_multiple_prompts(strategy, task_name, prompt_files, models, client)
-    
+        responses = run_multiple_prompts(strategy, task_name, prompt_files, models, client)
+
+    save_responses(responses)
 
 if __name__ == '__main__':
     if not os.path.exists(PROMPTS_DIR):
