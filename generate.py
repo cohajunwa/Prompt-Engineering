@@ -79,13 +79,14 @@ def parse_json_file(json_file):
 
     return data["strategy"], data["task_name"], data["prompt_files"]
 
-def save_responses(responses):
+def save_responses(responses, models):
     """
-    Saves models' response data into JSON file
+    Saves models' response data into JSON and text files
     Args:
         responses (dict): Dictionary consisting of task name, strategy, and model outputs
+        models (list[str]): List of models
     Output:
-        Saved JSON file with model responses
+        Saved JSON file with model response data and text files containing model outputs
     """
 
     strategy_codes = {"self_consistency": "sc", 
@@ -94,10 +95,19 @@ def save_responses(responses):
                     "few_shot": "fs", 
                     "chain_of_thought": "cot"}
     
-    output_file = os.path.join(RESPONSES_DIR, f"{responses[task_name]}_{strategy_codes[responses[strategy]]}_responses.json")
-    print(f"Saving model reponses to {output_file}")
-    with open(output_file, 'w') as file:
+    task_name, code = responses["task_name"], strategy_codes[responses["strategy"]]
+
+    output_json_file = os.path.join(RESPONSES_DIR, f"{task_name}_{code}_responses.json")
+    print(f"Saving model reponses to {output_json_file}")
+    with open(output_json_file, 'w') as file:
         json.dump(responses, file, indent=4)
+
+    for model in models:
+        
+        for i, model_output in enumerate(responses[f"{model}_output"]):
+            output_text_file = os.path.join(RESPONSES_DIR, 'response_text', f"{task_name}_{code}_{model}_{i}_response.txt")
+            with open(output_text_file, 'w') as f:
+                f.write(model_output)    
 
 def run_single_prompt(strategy, task_name, prompt_files, models, client):
     """
@@ -189,7 +199,7 @@ def run(task_file, models, client):
         models (list[str]): List of models
         client
     Output:
-        Saved JSON file with model responses
+        Saved JSON file with model response data and text files containing model outputs
     """
     print(f"Processing {task_file}...")
 
@@ -204,11 +214,12 @@ def run(task_file, models, client):
     elif strategy == "self_consistency" or strategy == "prompt_chaining":
         responses = run_multiple_prompts(strategy, task_name, prompt_files, models, client)
 
-    save_responses(responses)
+    save_responses(responses, models)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(formatter_class = argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--prompts_dir", type = str, default = 'prompts', help = "Directory with prompts")
+    parser.add_argument("--responses_dir", type = str, default = 'responses', help = 'Directory to save model responses')
     parser.add_argument("--models", type = str, nargs="*", default = ['gpt-4o-mini', 'Codestral-2501'], help = "List of models (only two allowed!)")
 
     args = parser.parse_args()
@@ -219,22 +230,23 @@ if __name__ == '__main__':
     else:
         PROMPTS_DIR = args.prompts_dir
 
-    if not os.path.exists(RESPONSES_DIR):
-        os.makedirs(RESPONSES_DIR)
+    RESPONSES_DIR = args.responses_dir
+    os.makedirs(os.path.join(RESPONSES_DIR, 'response_text'), exist_ok=True)
+
+
+    models = args.models
+
+    if not models or len(models) != 2:
+        print("You must specify only two models. Terminating run.")
+        sys.exit(1)
 
     client = OpenAI(
         base_url = "https://models.inference.ai.azure.com",
         api_key = OPENAI_API_KEY,
     )
 
-    # scores = {}
     for prompt_file in os.listdir(PROMPTS_DIR):
         if prompt_file.endswith('.json'):
             run(os.path.join(PROMPTS_DIR, prompt_file), models, client)
-        
-            # scores[task_name] = score
-
-    # with open('scores.json', 'w') as f:
-    #     json.dump(scores, f, indent=4)
 
 
