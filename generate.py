@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import sys
@@ -7,8 +8,8 @@ from openai import OpenAI
 
 load_dotenv()
 
-GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
-PROMPTS_DIR = 'prompts'
+OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
+PROMPTS_DIR = ''
 RESPONSES_DIR = 'responses'
 
 def generate_response(model, messages, client):
@@ -206,19 +207,26 @@ def run(task_file, models, client):
     save_responses(responses)
 
 if __name__ == '__main__':
-    if not os.path.exists(PROMPTS_DIR):
+    parser = argparse.ArgumentParser(formatter_class = argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--prompts_dir", type = str, default = 'prompts', help = "Directory with prompts")
+    parser.add_argument("--models", type = str, nargs="*", default = ['gpt-4o-mini', 'Codestral-2501'], help = "List of models (only two allowed!)")
+
+    args = parser.parse_args()
+
+    if not os.path.exists(args.prompts_dir):
         print("Prompt directory does not exist! Terminating run.")
         sys.exit(1)
-    
+    else:
+        PROMPTS_DIR = args.prompts_dir
+
     if not os.path.exists(RESPONSES_DIR):
         os.makedirs(RESPONSES_DIR)
 
     client = OpenAI(
         base_url = "https://models.inference.ai.azure.com",
-        api_key = GITHUB_TOKEN,
+        api_key = OPENAI_API_KEY,
     )
 
-    models = ['gpt-4o-mini', 'Codestral-2501']
     # scores = {}
     for prompt_file in os.listdir(PROMPTS_DIR):
         if prompt_file.endswith('.json'):
