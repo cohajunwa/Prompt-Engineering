@@ -88,14 +88,23 @@ def include_comparison_scores(responses, models):
     """
     responses["bleu_scores"] = []
     responses["similarity_scores"] = []
-    
-    for output1, output2 in zip(responses[f"{models[0]}_output"], responses[f"{models[1]}_output"]):
-        bleu_score = get_bleu_4_score(output1, output2)
-        similarity_score = get_cosine_similarity(output1, output2)
+
+    for i, (output1, output2) in enumerate(zip(responses[f"{models[0]}_output"], responses[f"{models[1]}_output"])):
+        try:
+            if not output1 or not output2:
+                raise ValueError("Empty model output string.")
+
+            bleu_score = get_bleu_4_score(output1, output2)
+            similarity_score = get_cosine_similarity(output1, output2)
+
+        except Exception as e:
+            print(f"[Warning] Skipping comparison for pair {i} due to error: {e}")
+            bleu_score = None
+            similarity_score = None
 
         responses["bleu_scores"].append(bleu_score)
         responses["similarity_scores"].append(similarity_score)
-    
+
     return responses
    
 def save_responses(responses, models):
