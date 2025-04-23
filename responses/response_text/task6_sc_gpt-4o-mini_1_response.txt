@@ -1,0 +1,55 @@
+Here's a schema design for a review app that includes tables for users, books, and reviews. The schema incorporates appropriate primary keys, foreign keys, and constraints to ensure data integrity.
+
+### Schema Design
+
+```sql
+-- Users Table
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,        -- Unique identifier for each user
+    name VARCHAR(100) NOT NULL    -- Name of the user
+);
+
+-- Books Table
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,        -- Unique identifier for each book
+    title VARCHAR(255) NOT NULL   -- Title of the book
+);
+
+-- Reviews Table
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,         -- Unique identifier for each review
+    user_id INT NOT NULL,          -- Foreign key referencing users
+    book_id INT NOT NULL,          -- Foreign key referencing books
+    rating INT CHECK (rating BETWEEN 1 AND 5), -- Rating between 1 and 5
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp for when the review was created
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp for when the review was last updated
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, -- Foreign key constraint for user_id
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE, -- Foreign key constraint for book_id
+    UNIQUE (user_id, book_id) -- Ensure a user can only review a book once
+);
+```
+
+### Explanation of Schema Components
+
+1. **Users Table**:
+   - `id`: A unique identifier for each user (primary key).
+   - `name`: The name of the user, which cannot be null.
+
+2. **Books Table**:
+   - `id`: A unique identifier for each book (primary key).
+   - `title`: The title of the book, which cannot be null.
+
+3. **Reviews Table**:
+   - `id`: A unique identifier for each review (primary key).
+   - `user_id`: A foreign key referencing the `users` table (must exist in `users`).
+   - `book_id`: A foreign key referencing the `books` table (must exist in `books`).
+   - `rating`: An integer rating between 1 and 5 (inclusive). A check constraint ensures that ratings fall within this range.
+   - `created_at`: A timestamp for when the review was created, defaulting to the current timestamp.
+   - `updated_at`: A timestamp for when the review was last updated, defaulting to the current timestamp and automatically updating on row modification.
+   - Foreign key constraints ensure that reviews cannot exist without corresponding users and books. The `ON DELETE CASCADE` option means that if a user or book is deleted, their associated reviews will also be deleted.
+   - A unique constraint on `(user_id, book_id)` ensures that a user can only leave one review per book.
+
+### Additional Considerations
+- You may want to consider adding more fields, such as `text` for the review content, or `helpfulness` ratings for user feedback.
+- Indexes can be added for performance optimization, especially on foreign key fields and frequently queried fields.
+- Depending on your application's requirements, you might also consider additional constraints or relationships, such as a `genres` table or user authentication details.

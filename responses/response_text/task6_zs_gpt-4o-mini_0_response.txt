@@ -1,0 +1,52 @@
+To design a schema for a review app that includes users, books, and reviews, we need to define each table along with appropriate keys, constraints, and relationships among them. Below is a proposed schema:
+
+### 1. Users Table
+The `users` table will store information about the users of the app.
+
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,                -- Unique identifier for each user
+    name VARCHAR(100) NOT NULL,          -- Name of the user
+    created_at TIMESTAMP DEFAULT NOW(),   -- Timestamp of when the user was created
+    updated_at TIMESTAMP DEFAULT NOW()     -- Timestamp of the last update
+);
+```
+
+### 2. Books Table
+The `books` table will store information about the books available for review.
+
+```sql
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,                -- Unique identifier for each book
+    title VARCHAR(255) NOT NULL,         -- Title of the book
+    author VARCHAR(100),                  -- Author of the book (optional)
+    published_date DATE,                  -- Publication date of the book (optional)
+    created_at TIMESTAMP DEFAULT NOW(),   -- Timestamp of when the book was added
+    updated_at TIMESTAMP DEFAULT NOW()     -- Timestamp of the last update
+);
+```
+
+### 3. Reviews Table
+The `reviews` table will store the reviews submitted by users for specific books.
+
+```sql
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,                -- Unique identifier for each review
+    user_id INT NOT NULL,                 -- Foreign key referencing users table
+    book_id INT NOT NULL,                 -- Foreign key referencing books table
+    rating INT CHECK (rating >= 1 AND rating <= 5), -- Rating between 1 and 5
+    review_text TEXT,                     -- Optional text for the review
+    created_at TIMESTAMP DEFAULT NOW(),   -- Timestamp of when the review was created
+    updated_at TIMESTAMP DEFAULT NOW(),    -- Timestamp of the last update
+    UNIQUE (user_id, book_id),            -- Prevent multiple reviews from the same user for the same book
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,  -- Cascade delete for user
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE   -- Cascade delete for book
+);
+```
+
+### Summary of Schema Design
+- **Users Table**: Stores user information with a unique `id` as the primary key.
+- **Books Table**: Stores book information, including an optional author and publication date, with a unique `id` as the primary key.
+- **Reviews Table**: Links users and books, includes a rating (with a constraint ensuring it is between 1 and 5), and allows for an optional review text. It prevents multiple reviews by the same user for the same book using a unique constraint on `(user_id, book_id)`. Foreign keys ensure referential integrity, with cascading deletes to maintain data consistency.
+
+This schema provides a solid foundation for a review app with appropriate keys and constraints.

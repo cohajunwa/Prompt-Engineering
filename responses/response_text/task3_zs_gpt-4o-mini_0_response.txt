@@ -1,0 +1,13 @@
+The bug in the provided C++ function `getArray` can be classified as a **dangling pointer** bug.
+
+### Explanation:
+
+1. **Local Array**: The line `int arr[size];` declares a local array `arr` on the stack. This means that the memory for this array is allocated when the function is called and deallocated when the function exits.
+
+2. **Returning Pointer**: The function returns a pointer to this local array with `return arr;`. However, once the function exits, `arr` goes out of scope, and the memory it occupied is no longer valid. 
+
+3. **Dangling Pointer**: The pointer returned by the function points to a memory location that is no longer allocated for the array, leading to undefined behavior if the caller tries to access it.
+
+### Conclusion:
+
+Returning a pointer to a local variable is problematic in C++ and should be avoided. To fix this issue, you can either allocate the array on the heap using `new` (and remember to delete it later) or use a more modern approach such as `std::vector` which manages memory automatically.

@@ -1,0 +1,45 @@
+Sure, I can help you complete the binary search implementation. Here's the step-by-step process to compare and adjust the bounds:
+
+1. **Compare the middle element with the target**:
+   - If the middle element is equal to the target, return the index of the middle element.
+   - If the target is less than the middle element, it must be in the left half of the array.
+   - If the target is greater than the middle element, it must be in the right half of the array.
+
+2. **Adjust the bounds**:
+   - If the target is in the left half, move the `right` pointer to `mid - 1`.
+   - If the target is in the right half, move the `left` pointer to `mid + 1`.
+
+Here's the complete implementation:
+
+```java
+public int binarySearch(int[] arr, int target) {
+    int left = 0, right = arr.length - 1;
+
+    while (left <= right) {
+        int mid = (left + right) / 2;
+
+        // Compare the middle element with the target
+        if (arr[mid] == target) {
+            return mid;  // Target found
+        } else if (target < arr[mid]) {
+            right = mid - 1;  // Target is in the left half
+        } else {
+            left = mid + 1;  // Target is in the right half
+        }
+    }
+
+    return -1;  // Target not found
+}
+```
+
+### Explanation:
+- **Initialization**: `left` is set to the start of the array, and `right` is set to the end of the array.
+- **Loop Condition**: Continue the loop as long as `left` is less than or equal to `right`.
+- **Mid Calculation**: Calculate the middle index `mid`.
+- **Comparison**:
+  - If `arr[mid]` is equal to the `target`, return `mid`.
+  - If `target` is less than `arr[mid]`, adjust `right` to `mid - 1`.
+  - If `target` is greater than `arr[mid]`, adjust `left` to `mid + 1`.
+- **Return**: If the loop ends without finding the target, return `-1`.
+
+This implementation ensures that the binary search is efficient with a time complexity of \(O(\log n)\).

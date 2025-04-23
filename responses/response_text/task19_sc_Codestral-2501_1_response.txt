@@ -1,0 +1,30 @@
+To decompose the high-level comment/summary "Function that validates an input, calculates the square, and returns the result" into logical steps, we can break down the functionality of the `process` function. Here are the logical steps:
+
+1. **Input Validation**:
+   - Check if the input `x` is negative.
+   - If `x` is negative, return `-1` to indicate an error or invalid input.
+
+2. **Square Calculation**:
+   - If the input `x` is not negative, calculate the square of `x` (i.e., `x * x`).
+
+3. **Return Result**:
+   - Return the calculated square value.
+
+Here is the `process` function with these steps explicitly outlined:
+
+```c
+int process(int x) {
+    // Step 1: Input Validation
+    if (x < 0) {
+        return -1;  // Invalid input, return -1
+    }
+
+    // Step 2: Square Calculation
+    int result = x * x;  // Calculate the square of x
+
+    // Step 3: Return Result
+    return result;  // Return the calculated square value
+}
+```
+
+This breakdown ensures that each step is clear and that the function operates as intended.

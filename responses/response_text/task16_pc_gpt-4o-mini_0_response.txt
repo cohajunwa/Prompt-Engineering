@@ -1,0 +1,31 @@
+The provided binary search implementation is incomplete. Here are the missing parts and required corrections to make the function work properly:
+
+1. **Comparison Logic**: Inside the while loop, you need to compare the middle element (`arr[mid]`) with the target value. Depending on the comparison, you should adjust the `left` or `right` pointers.
+
+2. **Return Statement**: If the target is found, you should return the index `mid`. The current implementation only has a return statement at the end, which returns `-1` (indicating that the target was not found) without checking if the target was actually found.
+
+Here’s the corrected implementation:
+
+```java
+public int binarySearch(int[] arr, int target) { 
+    int left = 0, right = arr.length - 1; 
+    while (left <= right) { 
+        int mid = (left + right) / 2; 
+        if (arr[mid] == target) {
+            return mid; // Target found
+        } else if (arr[mid] < target) {
+            left = mid + 1; // Search in the right half
+        } else {
+            right = mid - 1; // Search in the left half
+        }
+    } 
+    return -1; // Target not found
+}
+```
+
+### Summary of Changes Made:
+- Added a check for equality `arr[mid] == target` to return the index if the target is found.
+- Added the condition `arr[mid] < target` to adjust the `left` pointer when the target is greater than the middle value.
+- Added the condition `arr[mid] > target` to adjust the `right` pointer when the target is less than the middle value.
+
+With these changes, the binary search function should now work correctly.

@@ -1,0 +1,9 @@
+Sure, here is the corrected version of the `isEven` function:
+
+```javascript
+function isEven(n) {
+    return n % 2 === 0; // Returns true if n is even, false otherwise
+}
+```
+
+This function now correctly returns `true` if the number `n` is even and `false` if it is odd. The change ensures that the function returns a boolean value, which is more explicit and aligned with common expectations for such a function.

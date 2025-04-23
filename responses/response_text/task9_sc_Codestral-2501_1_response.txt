@@ -1,0 +1,83 @@
+To create a REST API using Ktor for the `Product` data class, you need to set up a Ktor application with endpoints for GET and POST requests. Below is an example of how you can achieve this.
+
+First, ensure you have the necessary dependencies in your `build.gradle.kts` file:
+
+```kotlin
+dependencies {
+    implementation("io.ktor:ktor-server-core:2.0.0")
+    implementation("io.ktor:ktor-server-netty:2.0.0")
+    implementation("io.ktor:ktor-serialization:2.0.0")
+    implementation("io.ktor:ktor-server-content-negotiation:2.0.0")
+    implementation("io.ktor:ktor-server-status-pages:2.0.0")
+    implementation("io.ktor:ktor-server-views:2.0.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0")
+}
+```
+
+Next, create the `Product` data class and set up the Ktor application with the necessary endpoints.
+
+```kotlin
+import io.ktor.application.*
+import io.ktor.features.ContentNegotiation
+import io.ktor.http.HttpStatusCode
+import io.ktor.jackson.jackson
+import io.ktor.request.receive
+import io.ktor.response.respond
+import io.ktor.routing.get
+import io.ktor.routing.post
+import io.ktor.routing.routing
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import kotlinx.serialization.Serializable
+
+data class Product(val id: Int, val name: String, val price: Double)
+
+fun main() {
+    embeddedServer(Netty, port = 8080) {
+        install(ContentNegotiation) {
+            jackson {}
+        }
+
+        val products = mutableListOf(
+            Product(1, "Laptop", 1000.0),
+            Product(2, "Smartphone", 500.0)
+        )
+
+        routing {
+            get("/products") {
+                call.respond(products)
+            }
+
+            post("/products") {
+                val product = call.receive<Product>()
+                products.add(product)
+                call.respond(HttpStatusCode.Created, product)
+            }
+        }
+    }.start(wait = true)
+}
+```
+
+### Explanation:
+
+1. **Dependencies**: Ensure you have the necessary Ktor and Jackson dependencies for serialization.
+
+2. **Product Data Class**: Define the `Product` data class.
+
+3. **Ktor Application**:
+    - Use `embeddedServer` to start a Netty server on port 8080.
+    - Install `ContentNegotiation` with Jackson for JSON serialization.
+    - Initialize a mutable list `products` with some sample data.
+    - Define routing with GET and POST endpoints:
+        - `/products` (GET): Respond with the list of products.
+        - `/products` (POST): Receive a `Product` object from the request body, add it to the list, and respond with the created product and a `201 Created` status.
+
+### Running the Application:
+
+1. Ensure you have a Kotlin environment set up with Gradle.
+2. Run the `main` function to start the Ktor server.
+3. Use a tool like `curl` or Postman to test the endpoints:
+    - GET request to `http://localhost:8080/products` to retrieve the list of products.
+    - POST request to `http://localhost:8080/products` with a JSON body (e.g., `{"id": 3, "name": "Tablet", "price": 300.0}`) to add a new product.
+
+This setup provides a basic REST API for the `Product` data class using Ktor. You can further enhance it by adding more features like validation, error handling, and persistence.

@@ -1,0 +1,50 @@
+The script you provided has a few issues that need to be addressed. Here's a breakdown of what's wrong:
+
+1. **Incomplete `clean_line` function**: 
+   - The `clean_line` function is currently a placeholder (using `pass`). It should remove punctuation and convert text to lowercase. You need to implement this functionality.
+
+2. **Indentation error in `count_words` function**: 
+   - The line `clean = clean_line(line)` is not properly indented. It should be indented to be inside the `for line in lines:` loop.
+
+3. **Incorrect string quotation marks in `if __name__` statement**: 
+   - The quotation marks used around `'__main__'` are not standard single quotes. They appear to be typographic quotes (’ and ‘). They should be replaced with standard single quotes (').
+
+Here’s a corrected version of the script addressing the above issues:
+
+```python
+# file_processor.py - Complete script for processing text files 
+
+import string 
+
+def load_file(filepath): 
+    with open(filepath, 'r') as f: 
+        return f.readlines() 
+
+def clean_line(line): 
+    # Remove punctuation and make lowercase 
+    line = line.translate(str.maketrans('', '', string.punctuation))  # Remove punctuation
+    return line.lower().strip()  # Convert to lowercase and strip whitespace 
+
+def count_words(lines): 
+    word_counts = {} 
+    for line in lines: 
+        clean = clean_line(line)  # Correctly indented
+        for word in clean.split(): 
+            word_counts[word] = word_counts.get(word, 0) + 1 
+    return word_counts 
+
+def main():
+    filepath = 'input.txt' 
+    lines = load_file(filepath) 
+    counts = count_words(lines) 
+    for word, count in sorted(counts.items()): 
+        print(f"{word}: {count}") 
+
+if __name__ == '__main__':  # Corrected quotation marks
+    main()
+```
+
+### Summary of Fixes:
+- Implemented the `clean_line` function to remove punctuation and convert text to lowercase.
+- Corrected indentation in the `count_words` function.
+- Fixed the quotation marks in the `if __name__ == '__main__':` statement.

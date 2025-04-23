@@ -1,0 +1,12 @@
+To resolve the inconsistency between the function name and the logic in the provided code, we need to change the function logic so that it correctly determines if a number is odd. The original function is named `isOdd` but incorrectly checks if the number is even. 
+
+Here’s the corrected version of the function:
+
+```cpp
+// Fix:
+bool isOdd(int x) {
+    return x % 2 != 0; // Now correctly checks if x is odd
+}
+```
+
+In this corrected function, we use the condition `x % 2 != 0` to determine if `x` is odd, which aligns the logic with the function name.

@@ -1,0 +1,104 @@
+To improve the `parse_csv_line` function to support quoted fields, we need to consider a few key points about CSV formatting. Specifically, quoted fields can contain commas without being treated as field separators, and they may also contain escaped quotes. Let's implement the parser step-by-step.
+
+### Step 1: Basic Structure
+
+We'll start by defining the function and the basic logic to handle quoted fields.
+
+```python
+def parse_csv_line(line):
+    fields = []
+    current_field = ''
+    in_quotes = False
+
+    for char in line:
+        if char == '"' and (not current_field or current_field[-1] != '\\'):
+            in_quotes = not in_quotes  # Toggle the in_quotes flag
+        elif char == ',' and not in_quotes:
+            fields.append(current_field)
+            current_field = ''
+        else:
+            current_field += char
+
+    fields.append(current_field)  # Add the last field
+    return fields
+```
+
+### Step 2: Handle Escaped Quotes
+
+Next, we need to handle the case where quotes are escaped (e.g., `""` represents a single quote within a quoted field).
+
+```python
+def parse_csv_line(line):
+    fields = []
+    current_field = ''
+    in_quotes = False
+
+    for char in line:
+        if char == '"' and (not current_field or current_field[-1] != '\\'):
+            in_quotes = not in_quotes  # Toggle the in_quotes flag
+            if in_quotes:  # If we just entered quotes, continue to next char
+                continue
+        elif char == ',' and not in_quotes:
+            fields.append(current_field)
+            current_field = ''
+            continue
+        # Handle escaped quotes
+        if char == '"' and current_field and current_field[-1] == '"':
+            current_field = current_field[:-1] + '"'  # Remove escape and add one quote
+            continue
+        current_field += char
+
+    fields.append(current_field)  # Add the last field
+    return fields
+```
+
+### Step 3: Clean Up and Testing
+
+Let's ensure that the function handles various edge cases and clean the code.
+
+```python
+def parse_csv_line(line):
+    fields = []
+    current_field = ''
+    in_quotes = False
+    i = 0
+
+    while i < len(line):
+        char = line[i]
+
+        if char == '"' and (i == 0 or line[i - 1] != '\\'):
+            in_quotes = not in_quotes  # Toggle the in_quotes flag
+            i += 1
+            continue
+        
+        if char == ',' and not in_quotes:
+            fields.append(current_field)
+            current_field = ''
+        else:
+            if char == '"' and current_field and current_field[-1] == '"':
+                current_field = current_field[:-1] + '"'  # Remove escape and add one quote
+            else:
+                current_field += char
+        
+        i += 1
+
+    fields.append(current_field)  # Add the last field
+    return fields
+```
+
+### Step 4: Example Usage and Testing
+
+Now let's test the function with various input cases.
+
+```python
+# Test cases
+print(parse_csv_line('value1,value2,"value, with comma",value4'))  # ['value1', 'value2', 'value, with comma', 'value4']
+print(parse_csv_line('"escaped "" quote",value2,value3'))  # ['escaped " quote', 'value2', 'value3']
+print(parse_csv_line('value1,"value2,value3","value4"'))  # ['value1', 'value2,value3', 'value4']
+print(parse_csv_line('"value1","value2",""'))  # ['value1', 'value2', '']
+print(parse_csv_line('value1,"value2, with "escaped" quotes"'))  # ['value1', 'value2, with "escaped" quotes']
+```
+
+### Summary
+
+This parser should now correctly handle quoted fields, commas within those fields, and escaped quotes. You can further enhance it by adding error handling or supporting other CSV conventions as needed.

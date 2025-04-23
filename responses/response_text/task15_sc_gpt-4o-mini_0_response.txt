@@ -1,0 +1,22 @@
+To complete the constructor for the `Person` class, we need to define parameters for `name`, `age`, and an optional parameter for `email`. We can set default values, particularly for `email`, to make it optional. Here's how you can implement it:
+
+```python
+class Person:
+    def __init__(self, name, age, email=None):
+        self.name = name
+        self.age = age
+        self.email = email
+```
+
+In this implementation:
+- `name` and `age` are required parameters when creating an instance of `Person`.
+- `email` is an optional parameter, and if it is not provided, it will default to `None`.
+
+You can create an instance of the `Person` class like this:
+
+```python
+person1 = Person("Alice", 30)
+person2 = Person("Bob", 25, "bob@example.com")
+```
+
+In this example, `person1` does not have an email, while `person2` does.

@@ -1,0 +1,23 @@
+To decompose the high-level comment/summary into logical steps, we need to break down the function `process` into its individual operations and checks. Here’s a step-by-step breakdown:
+
+1. **Function Definition**: 
+   - The function is defined to take a single integer parameter `x`.
+   - The return type of the function is `int`.
+
+2. **Input Validation**: 
+   - The function checks if the input `x` is less than 0.
+   - If the condition `x < 0` is true, the function immediately returns `-1` to indicate an invalid input.
+
+3. **Calculation**: 
+   - If the input `x` is not less than 0 (i.e., it is 0 or positive), the function proceeds to calculate the square of `x`.
+   - This is done using the expression `x * x`.
+
+4. **Return Result**: 
+   - The calculated square of `x` is returned as the result of the function.
+
+5. **Summary of Function Behavior**: 
+   - The function validates the input to ensure it is non-negative.
+   - It calculates the square of the input if valid.
+   - It returns `-1` for negative inputs and the square for non-negative inputs.
+
+By following these steps, we clearly understand how the function operates and what it accomplishes.

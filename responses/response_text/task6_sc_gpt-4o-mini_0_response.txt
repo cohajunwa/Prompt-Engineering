@@ -1,0 +1,50 @@
+Here's a suggested schema for a review app that includes tables for users, books, and reviews. This schema includes appropriate keys and constraints to ensure data integrity and relationships between entities.
+
+```sql
+-- Users table
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,                -- Unique identifier for each user
+    name VARCHAR(100) NOT NULL            -- User's name, cannot be null
+);
+
+-- Books table
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,                -- Unique identifier for each book
+    title VARCHAR(255) NOT NULL           -- Book title, cannot be null
+);
+
+-- Reviews table
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,                -- Unique identifier for each review
+    user_id INT NOT NULL,                 -- Foreign key referencing users
+    book_id INT NOT NULL,                 -- Foreign key referencing books
+    rating INT CHECK (rating >= 1 AND rating <= 5),  -- Rating must be between 1 and 5
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Timestamp for when the review was created
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  -- Timestamp for when the review was last updated
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,  -- Ensures a user can be deleted without orphaning reviews
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,  -- Ensures a book can be deleted without orphaning reviews
+    UNIQUE (user_id, book_id)             -- Ensures a user can only review a book once
+);
+```
+
+### Explanation of the Schema
+
+1. **Users Table**:
+   - `id`: A unique identifier for each user, automatically incremented.
+   - `name`: The user's name, which cannot be null.
+
+2. **Books Table**:
+   - `id`: A unique identifier for each book, automatically incremented.
+   - `title`: The title of the book, which cannot be null.
+
+3. **Reviews Table**:
+   - `id`: A unique identifier for each review, automatically incremented.
+   - `user_id`: A foreign key that references the `id` of the `users` table. This field cannot be null.
+   - `book_id`: A foreign key that references the `id` of the `books` table. This field cannot be null.
+   - `rating`: An integer that stores the rating given by the user, constrained to be between 1 and 5.
+   - `created_at`: A timestamp that records when the review was created, with a default value of the current timestamp.
+   - `updated_at`: A timestamp that records when the review was last updated, with a default value of the current timestamp and an automatic update on row modification.
+   - Foreign key constraints ensure that if a user or book is deleted, any associated reviews will also be deleted (`ON DELETE CASCADE`).
+   - A unique constraint on the combination of `user_id` and `book_id` ensures that a user can only submit one review per book.
+
+This schema is designed to maintain data integrity and facilitate the relationships between users, books, and their reviews effectively.

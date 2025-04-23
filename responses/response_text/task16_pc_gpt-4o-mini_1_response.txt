@@ -1,0 +1,58 @@
+Sure! Below is a complete implementation of the binary search algorithm in Java:
+
+```java
+public class BinarySearch {
+
+    public int binarySearch(int[] arr, int target) {
+        int left = 0, right = arr.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2; // Avoids potential overflow
+
+            // Check if the target is present at mid
+            if (arr[mid] == target) {
+                return mid; // Target found, return the index
+            }
+            // If target is greater, ignore the left half
+            else if (arr[mid] < target) {
+                left = mid + 1; // Move left pointer to mid + 1
+            }
+            // If target is smaller, ignore the right half
+            else {
+                right = mid - 1; // Move right pointer to mid - 1
+            }
+        }
+
+        // Target is not present in the array
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        BinarySearch bs = new BinarySearch();
+        int[] arr = {2, 3, 4, 10, 40};
+        int target = 10;
+        int result = bs.binarySearch(arr, target);
+
+        if (result == -1) {
+            System.out.println("Element not found in the array");
+        } else {
+            System.out.println("Element found at index: " + result);
+        }
+    }
+}
+```
+
+### Explanation of the Code:
+1. **Class Definition**: The `BinarySearch` class contains the `binarySearch` method.
+2. **Method Parameters**: The method takes an array of integers (`arr`) and the `target` integer to search for.
+3. **Initialization**: Two pointers `left` and `right` are initialized to the start and end of the array.
+4. **While Loop**: The loop continues as long as `left` is less than or equal to `right`.
+5. **Calculate Midpoint**: The midpoint is calculated using `left + (right - left) / 2` to avoid potential overflow.
+6. **Comparison**:
+   - If `arr[mid]` matches the target, the method returns the index `mid`.
+   - If `arr[mid]` is less than the target, the search continues in the right half by updating `left`.
+   - If `arr[mid]` is greater than the target, the search continues in the left half by updating `right`.
+7. **Return Statement**: If the loop ends without finding the target, the method returns `-1`, indicating that the target is not in the array.
+8. **Main Method**: The `main` method demonstrates how to use the `binarySearch` function and prints the result.
+
+Make sure to test this implementation with different input arrays and target values to verify its correctness.

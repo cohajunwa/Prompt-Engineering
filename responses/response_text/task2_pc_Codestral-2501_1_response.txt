@@ -1,0 +1,13 @@
+To fix the off-by-one error in the `sum_range` function, you need to adjust the range in the `for` loop to include the `end` value. You can do this by changing `range(start, end)` to `range(start, end + 1)`. This ensures that the loop includes the `end` value in the summation.
+
+Here is the corrected function:
+
+```python
+def sum_range(start, end):
+    total = 0
+    for i in range(start, end + 1):
+        total += i
+    return total
+```
+
+With this change, the function will correctly sum all integers from `start` to `end`, inclusive.

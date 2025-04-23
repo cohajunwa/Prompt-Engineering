@@ -1,0 +1,51 @@
+To complete the recursive function for the Fibonacci sequence, we'll follow a step-by-step approach by first defining the base cases and then the recursive call.
+
+### Step 1: Define the Base Cases
+
+In the Fibonacci sequence, the base cases are:
+- `fibonacci(0)` should return `0` (the 0th Fibonacci number).
+- `fibonacci(1)` should return `1` (the 1st Fibonacci number).
+
+### Step 2: Implement the Recursive Call
+
+For `n > 1`, the Fibonacci number can be calculated using the formula:
+- `fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)`
+
+### Step 3: Combine Both Parts
+
+Now we can combine the base cases and the recursive call into the function.
+
+Here's the complete implementation of the Fibonacci function:
+
+```python
+def fibonacci(n):
+    # Base cases
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        # Recursive call
+        return fibonacci(n - 1) + fibonacci(n - 2)
+```
+
+### Explanation of the Code
+
+- The function `fibonacci` takes an integer `n` as input.
+- It first checks if `n` is `0` or `1`. If so, it returns `0` or `1`, respectively.
+- For any value of `n` greater than `1`, it makes a recursive call to calculate the Fibonacci number by summing the results of `fibonacci(n - 1)` and `fibonacci(n - 2)`.
+
+### Example Usage
+
+You can call this function to get Fibonacci numbers:
+
+```python
+print(fibonacci(0))  # Output: 0
+print(fibonacci(1))  # Output: 1
+print(fibonacci(5))  # Output: 5
+print(fibonacci(10)) # Output: 55
+```
+
+### Note
+
+While this implementation is correct, it is not efficient for large `n` because it recalculates Fibonacci numbers multiple times. For larger inputs, consider using memoization or an iterative approach to optimize it.

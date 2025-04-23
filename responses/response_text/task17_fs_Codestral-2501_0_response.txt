@@ -1,0 +1,9 @@
+The inconsistency in the function `isOdd` is that the logic checks if `x` is even rather than odd. To resolve this, the function should check if `x` is odd. Here is the corrected version of the function:
+
+```cpp
+bool isOdd(int x) {
+    return x % 2 != 0; // Logic corrected to check if x is odd
+}
+```
+
+In this corrected version, the function `isOdd` correctly returns `true` if `x` is odd and `false` otherwise.

@@ -1,0 +1,63 @@
+Sure! The script is already nearly complete. The only thing left to do is ensure it can handle file input properly and gracefully manage potential errors, such as missing files or reading issues. Below is a complete version of the script, including enhancements for error handling and comments for clarity:
+
+```python
+# file_processor.py - Complete script for processing text files 
+
+import string 
+
+def load_file(filepath): 
+    try:
+        with open(filepath, 'r') as f: 
+            return f.readlines() 
+    except FileNotFoundError:
+        print(f"Error: The file '{filepath}' was not found.")
+        return []
+    except Exception as e:
+        print(f"An error occurred while reading the file: {e}")
+        return []
+
+def clean_line(line): 
+    # Remove punctuation and make lowercase 
+    line = line.translate(str.maketrans('', '', string.punctuation))  # Remove punctuation
+    return line.lower().strip()  # Convert to lowercase and strip whitespace 
+
+def count_words(lines): 
+    word_counts = {} 
+    for line in lines: 
+        clean = clean_line(line)  # Clean the line
+        for word in clean.split(): 
+            if word:  # Ensure the word is not empty
+                word_counts[word] = word_counts.get(word, 0) + 1 
+    return word_counts 
+
+def main():
+    filepath = 'input.txt'  # Path to the input file
+    lines = load_file(filepath)  # Load the lines from the file
+    if not lines:  # If lines are empty (e.g., file not found), exit early
+        return
+    counts = count_words(lines)  # Count the words
+    for word, count in sorted(counts.items()):  # Sort and print the results
+        print(f"{word}: {count}") 
+
+if __name__ == '__main__':  # Entry point of the script
+    main()
+```
+
+### Explanation of the Completed Script:
+
+1. **Error Handling in `load_file`**:
+   - The `load_file` function now includes error handling to catch `FileNotFoundError` and other exceptions. If the file can't be found or read, it prints an error message and returns an empty list.
+
+2. **Cleaning Lines**:
+   - The `clean_line` function removes punctuation and converts the line to lowercase, ensuring that words are counted correctly regardless of case or punctuation.
+
+3. **Counting Words**:
+   - The `count_words` function processes each line, cleans it, and splits it into words. It ensures that empty strings are not added to the word count dictionary.
+
+4. **Main Function Logic**:
+   - The `main` function checks if any lines were loaded successfully. If the list of lines is empty, it returns early, preventing any further processing.
+
+5. **Execution Check**:
+   - The `if __name__ == '__main__':` block allows the script to be run directly or imported without executing the main function.
+
+This script is now fully functional and should correctly process a text file named `input.txt`, counting the occurrences of each word and printing the results in a sorted manner.

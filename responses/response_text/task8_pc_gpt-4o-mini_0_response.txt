@@ -1,0 +1,32 @@
+The parser you've provided, `parse_csv_line`, is a very basic implementation that uses the `split` method to separate the line into fields based solely on commas. This approach fails to handle quoted fields for several reasons:
+
+1. **Quoted Fields Containing Commas**: In a CSV (Comma-Separated Values) file, fields can be enclosed in quotes (typically double quotes). If a field contains a comma, the entire field should be treated as a single value. For example, the line:
+   ```
+   "John Doe", "123 Main St, Apt 4", "New York"
+   ```
+   should be parsed into three fields, but the naive splitting would result in four fields because of the comma inside the quoted address.
+
+2. **Escaped Quotes within Fields**: CSV format allows for quotes to be included within quoted fields by escaping them with another quote. For example:
+   ```
+   "John ""Johnny"" Doe"
+   ```
+   This should be interpreted as a single field containing the text `John "Johnny" Doe`, but a simple `split` would break it incorrectly.
+
+3. **Handling Edge Cases**: There are various edge cases in CSV parsing, such as:
+   - Fields that start or end with quotes.
+   - Empty fields that are represented as `""`.
+   - Newlines within quoted fields.
+   - Mixed use of quotes (e.g., single quotes instead of double quotes).
+
+To properly handle quoted fields, you would need a more sophisticated approach that can track when you are inside or outside of quotes while parsing the line. This might involve maintaining a state (inside or outside quotes) as you iterate over each character in the line.
+
+Here’s an example of a more robust CSV parser that can handle quoted fields:
+
+```python
+import csv
+
+def parse_csv_line(line):
+    return list(csv.reader([line]))[0]
+```
+
+In this version, we utilize Python's built-in `csv` module, which correctly handles all the complexities of CSV parsing, including quoted fields, escaped quotes, and more. This is preferred over writing a custom parser from scratch, especially given the potential pitfalls and edge cases of CSV formats.

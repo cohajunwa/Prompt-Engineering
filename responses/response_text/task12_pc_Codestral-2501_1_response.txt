@@ -1,0 +1,21 @@
+Sure, I can help you fix the bug in the `factorial` function. The issue is that the range in the `for` loop should go up to `n` inclusive, but it currently stops at `n-1`. To fix this, you need to change the range to `range(1, n + 1)`.
+
+Here is the corrected function:
+
+```python
+def factorial(n):
+    result = 1
+    for i in range(1, n + 1):  # Change n to n + 1 to include n in the range
+        result *= i
+    return result
+```
+
+With this correction, the loop will iterate from `1` to `n`, inclusive, ensuring that all numbers from `1` to `n` are multiplied together to compute the factorial correctly. Here are a few examples of how the function works:
+
+```python
+print(factorial(5))  # Output: 120 (since 5! = 5 * 4 * 3 * 2 * 1 = 120)
+print(factorial(0))  # Output: 1 (by definition, 0! = 1)
+print(factorial(1))  # Output: 1 (since 1! = 1)
+```
+
+This should resolve the bug and make the function work as intended.

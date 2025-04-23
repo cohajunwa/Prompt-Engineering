@@ -1,0 +1,96 @@
+Let's analyze the script step by step to identify potential logic issues or design flaws, and then we'll refactor it for better readability, correctness, and safety.
+
+### Potential Issues:
+
+1. **Syntax Errors**:
+   - The `read_csv` function has incorrect indentation for the return statement.
+   - There are syntax errors with the string literals (e.g., `’data .csv ’` should be `'data.csv'`).
+
+2. **Incorrect File Path**:
+   - The file path `'data .csv '` contains an extra space, which will cause a `FileNotFoundError` if the file is actually named `data.csv`.
+
+3. **Error Handling**:
+   - The script does not handle cases where the file does not exist or where the CSV contents are not as expected (e.g., non-numeric values in the column to be summarized).
+
+4. **Column Index**:
+   - The script assumes that the column to be summarized is always the second column (index 1). This might not be a safe assumption.
+
+5. **Code Readability**:
+   - The script lacks proper docstrings and comments to explain the purpose of functions and key steps.
+
+### Refactored Code:
+
+```python
+# utils.py - Script to parse and summarize numeric CSV files
+
+import csv
+from typing import List, Tuple
+
+def read_csv(filepath: str) -> List[List[str]]:
+    """
+    Reads a CSV file and returns its contents as a list of rows.
+
+    Args:
+        filepath (str): The path to the CSV file.
+
+    Returns:
+        List[List[str]]: The contents of the CSV file as a list of rows.
+    """
+    try:
+        with open(filepath, 'r') as f:
+            return [row for row in csv.reader(f)]
+    except FileNotFoundError:
+        print(f"Error: File '{filepath}' not found.")
+        return []
+
+def summarize_column(data: List[List[str]], index: int) -> Tuple[float, float]:
+    """
+    Summarizes a numeric column in the CSV data.
+
+    Args:
+        data (List[List[str]]): The CSV data as a list of rows.
+        index (int): The index of the column to summarize.
+
+    Returns:
+        Tuple[float, float]: The total and average of the column.
+    """
+    try:
+        values = [float(row[index]) for row in data[1:]]  # Skip header
+        total = sum(values)
+        avg = total / len(values)
+        return total, avg
+    except (IndexError, ValueError) as e:
+        print("Error processing column. Ensure the column index exists and contains numeric values.")
+        print(e)
+        return 0.0, 0.0
+
+def main():
+    """
+    Main function to read the CSV file and summarize a column.
+    """
+    filepath = 'data.csv'
+    data = read_csv(filepath)
+    if not data:
+        return
+
+    try:
+        total, avg = summarize_column(data, 1)  # Assuming the second column
+        print("Total:", total)
+        print("Average:", avg)
+    except Exception as e:
+        print("An error occurred while summarizing the column.")
+        print(e)
+
+if __name__ == '__main__':
+    main()
+```
+
+### Changes Made:
+
+1. **Syntax Correction**: Fixed indentation and string literals.
+2. **Error Handling**: Added error handling for file reading and column summarization.
+3. **Type Hints and Docstrings**: Added type hints and docstrings for better readability and maintainability.
+4. **Check for Empty Data**: Added a check to return early if the data is empty after reading the CSV file.
+5. **Column Index**: Retained the assumption that the column to summarize is the second column, but added error handling to manage cases where this might not be true.
+
+This refactored version should be more robust and easier to understand, while maintaining the original functionality.

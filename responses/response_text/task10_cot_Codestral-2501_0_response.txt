@@ -1,0 +1,32 @@
+Let's reason through the function `reverse_words` step-by-step:
+
+1. **Function Definition**: The function is defined with a single parameter `sentence`.
+
+2. **Splitting the Sentence**:
+   ```python
+   sentence.split()
+   ```
+   This line splits the input `sentence` into a list of words. For example, if `sentence` is `"hello world"`, `sentence.split()` would result in `['hello', 'world']`.
+
+3. **Reversing the List**:
+   ```python
+   sentence.split()[::-1]
+   ```
+   This part reverses the list of words. For the example above, `['hello', 'world'][::-1]` would result in `['world', 'hello']`.
+
+4. **Joining the Reversed List**:
+   ```python
+   ''.join(sentence.split()[::-1])
+   ```
+   This line joins the reversed list of words back into a single string. The `join` method concatenates the words with nothing between them (i.e., no spaces). For the example, `''.join(['world', 'hello'])` would result in `'worldhello'`.
+
+5. **Returning the Result**:
+   ```python
+   return ''.join(sentence.split()[::-1])
+   ```
+   The function returns the concatenated string.
+
+### Summary
+The function `reverse_words` takes a sentence as input, splits it into words, reverses the order of the words, and then joins them back into a single string without spaces. The resulting string has the words in reverse order but concatenated together without any spaces in between.
+
+For example, if the input is `"hello world"`, the output will be `"worldhello"`.

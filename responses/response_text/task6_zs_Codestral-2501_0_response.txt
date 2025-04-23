@@ -1,0 +1,43 @@
+Certainly! Here is a schema for a review app with users, books, and reviews. The schema includes appropriate keys and constraints to ensure data integrity and consistency.
+
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    book_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5), -- Assuming ratings are between 1 and 5
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
+    UNIQUE (user_id, book_id) -- Ensure a user can only review a book once
+);
+```
+
+### Explanation:
+1. **users Table:**
+   - `id`: A unique identifier for each user, set to auto-increment.
+   - `name`: The name of the user, which is a required field.
+
+2. **books Table:**
+   - `id`: A unique identifier for each book, set to auto-increment.
+   - `title`: The title of the book, which is a required field.
+
+3. **reviews Table:**
+   - `id`: A unique identifier for each review, set to auto-increment.
+   - `user_id`: A foreign key referencing the `id` in the `users` table. This ensures that each review is associated with a valid user.
+   - `book_id`: A foreign key referencing the `id` in the `books` table. This ensures that each review is associated with a valid book.
+   - `rating`: An integer representing the rating given to the book. The `CHECK` constraint ensures that the rating is between 1 and 5.
+   - `FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE`: Ensures that if a user is deleted, all their reviews are also deleted.
+   - `FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE`: Ensures that if a book is deleted, all its reviews are also deleted.
+   - `UNIQUE (user_id, book_id)`: Ensures that a user can only write one review per book.
+
+This schema design ensures that the data remains consistent and that the relationships between users, books, and reviews are properly managed.

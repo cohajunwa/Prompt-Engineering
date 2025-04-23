@@ -1,0 +1,30 @@
+To decompose the high-level comment/summary into logical steps for the function `process`, follow these steps:
+
+1. **Input Validation**:
+   - Check if the input `x` is less than 0.
+   - If `x` is less than 0, return `-1`.
+
+2. **Calculation**:
+   - If `x` is not less than 0, calculate the square of `x` (i.e., `x * x`).
+
+3. **Return Result**:
+   - Return the calculated square of `x`.
+
+Here is the function with the decomposed steps:
+
+```c
+int process(int x) {
+    // Step 1: Input Validation
+    if (x < 0) {
+        return -1;
+    }
+
+    // Step 2: Calculation
+    int result = x * x;
+
+    // Step 3: Return Result
+    return result;
+}
+```
+
+This decomposition makes the function logic clearer and easier to understand.

@@ -1,0 +1,11 @@
+The bug in the `isEven` function is that it returns `1` or `0` instead of `true` or `false`. In JavaScript, `1` is truthy and `0` is falsy, but for clarity and explicitness, it's often better to return `true` or `false` directly.
+
+Here is the corrected version of the function:
+
+```javascript
+function isEven(n) {
+    return n % 2 === 0; // Returns true if n is even, false otherwise
+}
+```
+
+This way, the function explicitly returns a boolean value, making its intent clearer.

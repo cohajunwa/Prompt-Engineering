@@ -1,0 +1,35 @@
+To resolve the inconsistency, you need to ensure that the function name accurately reflects the logic it implements. If the goal is to check if a number is odd, the function name should be `isOdd` and the logic should return `true` when the number is odd.
+
+Here is the corrected version of the function:
+
+```cpp
+// Returns true if x is odd
+bool isOdd(int x) {
+    return x % 2 != 0;
+}
+```
+
+If the goal is to check if a number is even, the function name should be `isEven` and the logic should return `true` when the number is even:
+
+```cpp
+// Returns true if x is even
+bool isEven(int x) {
+    return x % 2 == 0;
+}
+```
+
+Choose the correct version based on the intended functionality. If you need both functionalities, you can define two separate functions:
+
+```cpp
+// Returns true if x is odd
+bool isOdd(int x) {
+    return x % 2 != 0;
+}
+
+// Returns true if x is even
+bool isEven(int x) {
+    return x % 2 == 0;
+}
+```
+
+This ensures that the function name and the logic are consistent and accurately represent what the functions do.

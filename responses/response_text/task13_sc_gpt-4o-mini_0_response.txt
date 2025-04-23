@@ -1,0 +1,122 @@
+To implement node deletion by value in a singly linked list, we need to traverse the list, find the node with the specified value (key), and then adjust the pointers to remove that node from the list. Below is a function that accomplishes this, following the provided structure of the `Node`:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node { 
+    int data; 
+    struct Node* next; 
+}; 
+
+void deleteNode(struct Node** head, int key) {
+    // Check if the linked list is empty
+    if (*head == NULL) {
+        return;
+    }
+
+    struct Node* temp = *head;
+    struct Node* prev = NULL;
+
+    // If the node to be deleted is the head node itself
+    if (temp != NULL && temp->data == key) {
+        *head = temp->next; // Change head
+        free(temp);         // Free old head
+        return;
+    }
+
+    // Search for the key to be deleted, keep track of the previous node
+    while (temp != NULL && temp->data != key) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // If the key was not present in the linked list
+    if (temp == NULL) {
+        return;
+    }
+
+    // Unlink the node from the linked list
+    prev->next = temp->next;
+    free(temp); // Free memory
+}
+
+// Function to add a new node at the end of the list (for testing purposes)
+void append(struct Node** head_ref, int new_data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    struct Node* last = *head_ref;
+    new_node->data = new_data;
+    new_node->next = NULL;
+
+    if (*head_ref == NULL) {
+        *head_ref = new_node;
+        return;
+    }
+
+    while (last->next != NULL) {
+        last = last->next;
+    }
+
+    last->next = new_node;
+}
+
+// Function to print the linked list (for testing purposes)
+void printList(struct Node* node) {
+    while (node != NULL) {
+        printf("%d -> ", node->data);
+        node = node->next;
+    }
+    printf("NULL\n");
+}
+
+// Main function to test the deleteNode function
+int main() {
+    struct Node* head = NULL;
+
+    // Create a linked list 1->2->3->4->5
+    append(&head, 1);
+    append(&head, 2);
+    append(&head, 3);
+    append(&head, 4);
+    append(&head, 5);
+
+    printf("Original Linked List: ");
+    printList(head);
+
+    // Delete a node with value 3
+    deleteNode(&head, 3);
+    printf("Linked List after deleting 3: ");
+    printList(head);
+
+    // Delete a node with value 1 (head)
+    deleteNode(&head, 1);
+    printf("Linked List after deleting 1: ");
+    printList(head);
+
+    // Delete a node with value 5 (tail)
+    deleteNode(&head, 5);
+    printf("Linked List after deleting 5: ");
+    printList(head);
+
+    // Clean up remaining nodes
+    deleteNode(&head, 2);
+    deleteNode(&head, 4);
+
+    return 0;
+}
+```
+
+### Explanation:
+- **deleteNode function**: 
+  - Checks if the linked list is empty.
+  - If the node to be deleted is the head node, it updates the head pointer and frees the old head.
+  - It traverses the list to find the node with the specified key, keeping track of the previous node.
+  - If the node is found, it unlinks it from the list and frees its memory.
+  
+- **append function**: A helper function to add new nodes at the end of the list.
+
+- **printList function**: A utility to print the current state of the linked list.
+
+- **main function**: Demonstrates the usage of the `deleteNode` function with a simple linked list. 
+
+This code provides a complete working example of how to delete a node from a singly linked list by its value.

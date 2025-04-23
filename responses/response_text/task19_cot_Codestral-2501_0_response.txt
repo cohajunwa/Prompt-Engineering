@@ -1,0 +1,52 @@
+To decompose the high-level comment/summary "Function that validates an input, calculates square, and returns result" into logical steps, we can break down the functionality into distinct, sequential operations. Here is the step-by-step breakdown:
+
+1. **Input Validation:**
+   - Check if the input `x` is less than 0.
+   - If it is, return `-1` to indicate an invalid input.
+
+2. **Square Calculation:**
+   - If the input `x` is not less than 0, calculate the square of `x`.
+
+3. **Return Result:**
+   - Return the calculated square value.
+
+Translating this into the function `process`, we can implement it as follows:
+
+```c
+int process(int x) {
+    // Step 1: Input Validation
+    if (x < 0) {
+        return -1; // Invalid input
+    }
+
+    // Step 2: Square Calculation
+    int result = x * x;
+
+    // Step 3: Return Result
+    return result;
+}
+```
+
+### Explanation of Each Step:
+
+1. **Input Validation:**
+   ```c
+   if (x < 0) {
+       return -1;
+   }
+   ```
+   This conditional statement checks if the input `x` is less than 0. If it is, the function returns `-1` to indicate that the input is invalid.
+
+2. **Square Calculation:**
+   ```c
+   int result = x * x;
+   ```
+   If the input is valid (i.e., not less than 0), this line calculates the square of `x` and stores it in the variable `result`.
+
+3. **Return Result:**
+   ```c
+   return result;
+   ```
+   Finally, the function returns the calculated square value stored in `result`.
+
+This breakdown ensures that each part of the function is clear and follows a logical sequence.

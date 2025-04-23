@@ -1,0 +1,7 @@
+The off-by-one error in the function `sum_range` is in the range of the `for` loop. The `range(start, end)` function generates numbers from `start` up to, but not including, `end`. This means that the last number in the range is `end - 1`, not `end`.
+
+Here is the relevant part of the code with the issue highlighted:
+```python
+for i in range(start, end):
+```
+This loop will include `start` but will not include `end` itself. If you want to include `end` in the summation, the range needs to be adjusted.

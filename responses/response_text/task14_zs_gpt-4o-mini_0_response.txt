@@ -1,0 +1,25 @@
+To complete the recursive function for calculating Fibonacci numbers, you'll need to define the base cases and the recursive call. The Fibonacci sequence is defined such that:
+
+- `fibonacci(0) = 0`
+- `fibonacci(1) = 1`
+- For `n > 1`, `fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)`
+
+Here's the completed function:
+
+```python
+def fibonacci(n):
+    # Base cases
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        # Recursive call
+        return fibonacci(n - 1) + fibonacci(n - 2)
+```
+
+### Explanation:
+- The function first checks if `n` is 0 or 1, returning the corresponding Fibonacci values (0 and 1).
+- For any value of `n` greater than 1, it recursively calls itself to compute the Fibonacci numbers for `n-1` and `n-2`, and returns their sum. 
+
+Keep in mind that this recursive approach has exponential time complexity due to repeated calculations, so it's not efficient for large values of `n`. For larger Fibonacci numbers, consider using memoization or an iterative approach.

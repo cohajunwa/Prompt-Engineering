@@ -1,0 +1,79 @@
+Sure, let's break down the process of creating a function to check if a number is prime step-by-step.
+
+### Step 1: Understand the Problem
+We need to create a function that takes an integer as input and returns `True` if the number is prime and `False` otherwise.
+
+### Step 2: Define the Function
+In Python, we define a function using the `def` keyword. Let's name the function `is_prime`.
+
+```python
+def is_prime(n):
+    pass
+```
+
+### Step 3: Handle Edge Cases
+We need to handle some edge cases:
+- If `n` is less than 2, it cannot be a prime number.
+- If `n` is 2, it is the only even prime number.
+
+```python
+def is_prime(n):
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+```
+
+### Step 4: Check for Divisibility
+For numbers greater than 2, we need to check if the number is divisible by any integer from 2 up to the square root of `n`. If it is divisible, it is not a prime number.
+
+```python
+import math
+
+def is_prime(n):
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+
+    # Check divisibility from 2 to square root of n
+    for i in range(2, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+
+    return True
+```
+
+### Step 5: Complete the Function
+The function is now complete. Here is the final version:
+
+```python
+import math
+
+def is_prime(n):
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+
+    # Check divisibility from 2 to square root of n
+    for i in range(2, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+
+    return True
+```
+
+### Step 6: Test the Function
+Let's test the function with a few examples:
+
+```python
+print(is_prime(1))  # False
+print(is_prime(2))  # True
+print(is_prime(3))  # True
+print(is_prime(4))  # False
+print(is_prime(17)) # True
+print(is_prime(18)) # False
+```
+
+This function should work correctly for checking if a number is prime.

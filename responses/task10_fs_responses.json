@@ -2,9 +2,15 @@
     "task_name": "task10",
     "strategy": "few_shot",
     "gpt-4o-mini_output": [
-        "Summary: This function takes a sentence as input and returns the sentence with its words reversed."
+        "Summary: This function takes a sentence as input and returns the sentence with the order of the words reversed."
     ],
     "Codestral-2501_output": [
-        "Summary: This function takes a sentence as input and returns the sentence with the words reversed, but the order of characters within each word remains unchanged."
+        "Sure, here's a summary for the given function:\n\n```python\ndef reverse_words(sentence):\n    return ''.join(sentence.split()[::-1])\n```\n\nSummary: This function takes a sentence as input, splits it into words, reverses the order of the words, and then joins them back into a single string. The resulting string has the words in the sentence reversed."
+    ],
+    "bleu_scores": [
+        3.0888058495721737
+    ],
+    "similarity_scores": [
+        0.9609296321868896
     ]
 }

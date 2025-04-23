@@ -1,0 +1,17 @@
+The method `countWordFrequency` takes a list of strings (words) as input and returns a map where the keys are the unique words from the list, and the values are the frequencies of those words in the list.
+
+Here's a step-by-step breakdown of its functionality:
+
+1. **Initialization**:
+   - It creates an empty `HashMap` called `freqMap` to store the word frequency.
+
+2. **Iteration**:
+   - It iterates over each word in the input list `words`.
+   - For each word in the list, it updates the `freqMap`:
+     - If the word is not already present in the map, it adds the word to the map with an initial frequency of 1.
+     - If the word is already present, it increments the frequency count by 1.
+
+3. **Return**:
+   - After processing all the words in the list, it returns the `freqMap` containing the word frequencies.
+
+In summary, the method counts the frequency of each word in the input list and returns a map with the words as keys and their respective frequencies as values.

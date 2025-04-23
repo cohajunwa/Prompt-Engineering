@@ -1,0 +1,35 @@
+Creating a regular expression (regex) to validate basic email addresses can be quite straightforward, but it's important to note that a fully compliant regex for email validation can be quite complex due to the various specifications and edge cases defined in standards like RFC 5322.
+
+However, for a basic and commonly used regex, you can use the following pattern:
+
+```regex
+^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+```
+
+Here's a breakdown of what this regex does:
+
+- `^` asserts the position at the start of the string.
+- `[a-zA-Z0-9._%+-]+` matches one or more characters that are either letters (uppercase or lowercase), digits, dots (`.`), underscores (`_`), percent signs (`%`), plus signs (`+`), or hyphens (`-`). This part matches the local part of the email address.
+- `@` matches the literal "@" symbol.
+- `[a-zA-Z0-9.-]+` matches one or more characters that are either letters (uppercase or lowercase), digits, dots (`.`), or hyphens (`-`). This part matches the domain part of the email address.
+- `\.` matches the literal dot (`.`) symbol.
+- `[a-zA-Z]{2,}` matches two or more letters (uppercase or lowercase). This part matches the top-level domain (TLD) of the email address.
+- `$` asserts the position at the end of the string.
+
+This regex will validate most basic email addresses, but it may not be suitable for all edge cases or more complex email formats. For more robust email validation, you might want to consider using a library that adheres to the official email validation standards.
+
+Here is an example of how you might use this regex in Python:
+
+```python
+import re
+
+def is_valid_email(email):
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email) is not None
+
+# Test the function
+print(is_valid_email("example@example.com"))  # Should return True
+print(is_valid_email("invalid-email@.com"))    # Should return False
+```
+
+This basic regex should work for most common email validation needs, but for more rigorous validation, you might need to use a more comprehensive regex or an email validation library.

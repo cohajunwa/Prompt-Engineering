@@ -1,0 +1,54 @@
+To validate basic email addresses using a regular expression (regex) in Python, you can follow these steps:
+
+1. Understand the structure of a basic email address.
+2. Create a regex pattern that matches the structure of a basic email address.
+3. Use the `re` module to compile and match the regex pattern against the input email.
+
+A basic email address typically consists of:
+- A local part before the `@` symbol.
+- A domain part after the `@` symbol.
+- The local part can include letters, digits, certain special characters, and can have dots (.) but not consecutively.
+- The domain part consists of at least one dot (.) and typically 2-4 letters.
+
+Here's how you can implement the `is_valid_email` function step-by-step:
+
+### Step 1: Define the Regex Pattern
+The regex pattern to match a basic email address can be constructed as follows:
+- Local part: `[a-zA-Z0-9._%+-]+`
+- `@` symbol: `@`
+- Domain part: `[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}` (this matches the domain and the top-level domain)
+
+### Step 2: Compile and Use the Regex Pattern
+Use the `re` module to compile the pattern and match it against the input email.
+
+Here's the complete function:
+
+```python
+import re
+
+def is_valid_email(email):
+    # Define the regex pattern for a basic email address
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+    # Compile the pattern
+    regex = re.compile(pattern)
+
+    # Match the pattern against the email
+    if regex.match(email):
+        return True
+    else:
+        return False
+
+# Test the function
+print(is_valid_email("test@example.com"))  # Should return True
+print(is_valid_email("invalid-email@"))    # Should return False
+print(is_valid_email("invalid-email@com")) # Should return False
+```
+
+### Explanation:
+- `^[a-zA-Z0-9._%+-]+`: The local part can include letters, digits, and some special characters (`.` `_` `%` `+` `-`). The `^` asserts the position at the start of the string.
+- `@`: Matches the `@` symbol.
+- `[a-zA-Z0-9.-]+`: The domain part can include letters, digits, dots (`.`), and hyphens (`-`).
+- `\.[a-zA-Z]{2,}$`: Ensures that the domain ends with a dot followed by at least two letters (e.g., `.com`, `.org`). The `$` asserts the position at the end of the string.
+
+This regex pattern should cover most basic email validation needs.

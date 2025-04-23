@@ -1,0 +1,100 @@
+To convert the `Product` data class into a REST API using Ktor, you'll need to set up a Ktor server and define the necessary routing for the GET and POST endpoints. Below is an example of how you can achieve this.
+
+### Step 1: Set up your Ktor project
+
+First, ensure you have a Ktor project set up. If you haven't done that yet, you can create a new project using IntelliJ IDEA or using the Ktor project generator.
+
+### Step 2: Define the `Product` data class
+
+You'll start with the existing `Product` data class.
+
+```kotlin
+data class Product(val id: Int, val name: String, val price: Double)
+```
+
+### Step 3: Create an in-memory storage for products
+
+For simplicity, we'll use an in-memory list to store products.
+
+```kotlin
+val products = mutableListOf<Product>()
+var nextId = 1
+```
+
+### Step 4: Set up Ktor routing and endpoints
+
+Now, create the Ktor application with the necessary GET and POST endpoints.
+
+```kotlin
+import io.ktor.application.*
+import io.ktor.http.*
+import io.ktor.jackson.jackson
+import io.ktor.response.*
+import io.ktor.routing.*
+import io.ktor.serialization.*
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import io.ktor.request.receive
+
+fun main() {
+    embeddedServer(Netty, port = 8080) {
+        install(ContentNegotiation) {
+            jackson {}
+        }
+        routing {
+            // GET endpoint to retrieve all products
+            get("/products") {
+                call.respond(products)
+            }
+
+            // POST endpoint to add a new product
+            post("/products") {
+                val product = call.receive<Product>()
+                product.id = nextId++
+                products.add(product)
+                call.respond(HttpStatusCode.Created, product)
+            }
+        }
+    }.start(wait = true)
+}
+```
+
+### Step 5: Add dependencies
+
+Make sure to add the necessary dependencies in your `build.gradle.kts` or `pom.xml`. Here’s an example for `build.gradle.kts`:
+
+```kotlin
+dependencies {
+    implementation("io.ktor:ktor-server-netty:2.2.2")
+    implementation("io.ktor:ktor-jackson:2.2.2")
+    implementation("io.ktor:ktor-server-core:2.2.2")
+    implementation("io.ktor:ktor-server-html-builder:2.2.2")
+    testImplementation("io.ktor:ktor-server-tests:2.2.2")
+}
+```
+
+### Step 6: Run your application
+
+Run your Ktor application, and you will have a REST API with the following endpoints:
+
+1. **GET /products**: Returns a list of all products.
+2. **POST /products**: Accepts a JSON representation of a `Product` and adds it to the in-memory list.
+
+### Example Requests
+
+1. **GET all products:**
+
+```bash
+curl -X GET http://localhost:8080/products
+```
+
+2. **POST a new product:**
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"name": "Sample Product", "price": 29.99}' http://localhost:8080/products
+```
+
+### Note:
+
+- The `id` field in the `Product` data class should be mutable for assigning a new ID when creating a new product. You can change the definition of `Product` accordingly, or you can manage the ID assignment in a different way.
+- You may want to add error handling, validation, and other necessary features to make the API production-ready.

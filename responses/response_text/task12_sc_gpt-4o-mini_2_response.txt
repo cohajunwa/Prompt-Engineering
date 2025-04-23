@@ -1,0 +1,19 @@
+The current implementation of the `factorial` function does not handle the case when the input is `0`. By definition, the factorial of `0` is `1`. 
+
+To fix this bug, you can add a condition to check if `n` is `0`. Here’s the corrected version of the function:
+
+```python
+def factorial(n):
+    if n == 0:
+        return 1
+    result = 1 
+    for i in range(1, n + 1):  # Update range to include n
+        result *= i 
+    return result
+```
+
+### Changes made:
+1. Added a check for when `n` is `0` to return `1`.
+2. Changed the range in the `for` loop to `range(1, n + 1)` so that it includes `n` in the multiplication.
+
+Now the function will correctly return `1` for `factorial(0)` and compute the factorial for positive integers as expected.

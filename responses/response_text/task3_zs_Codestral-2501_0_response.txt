@@ -1,0 +1,30 @@
+The bug in the provided C++ function is classified as a **dangling pointer bug**. Here’s why:
+
+1. **Local Array**: The array `arr` is declared inside the function `getArray`.
+2. **Scope of the Array**: When the function `getArray` returns, the local array `arr` goes out of scope, and the memory it occupied is deallocated.
+3. **Returning a Pointer to a Local Variable**: The function returns a pointer to the local array `arr`. After the function completes, this pointer becomes invalid because the memory it points to is no longer valid.
+
+When the caller of `getArray` tries to use the returned pointer, it will be pointing to deallocated memory, which can lead to undefined behavior, such as crashes or incorrect data.
+
+To fix this issue, you can allocate memory dynamically using `new` and then return a pointer to this dynamically allocated memory. However, you must also ensure that the memory is eventually deleted to avoid memory leaks. Here is an example of how you might fix it:
+
+```cpp
+int * getArray(int size) {
+    int *arr = new int[size]; // Dynamically allocate memory
+    return arr; // Return the pointer to the dynamically allocated array
+}
+
+// Remember to delete the allocated memory when you're done with it
+// Example usage:
+int main() {
+    int size = 10;
+    int *array = getArray(size);
+
+    // Use the array...
+
+    delete[] array; // Free the dynamically allocated memory
+    return 0;
+}
+```
+
+In this corrected version, the memory for the array is allocated on the heap, not the stack, so it persists even after the function returns. The caller is responsible for deleting the allocated memory to prevent memory leaks.

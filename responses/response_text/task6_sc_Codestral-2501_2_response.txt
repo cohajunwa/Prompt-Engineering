@@ -1,0 +1,59 @@
+To design a schema for a review app with users, books, and reviews, we need to ensure that the relationships between the tables are properly defined and that the data integrity is maintained with appropriate keys and constraints. Here's a suggested schema:
+
+### Users Table
+This table will store information about the users.
+
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+```
+
+### Books Table
+This table will store information about the books.
+
+```sql
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL
+);
+```
+
+### Reviews Table
+This table will store reviews given by users for books. Each review will have a rating.
+
+```sql
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    book_id INTEGER NOT NULL,
+    rating INTEGER NOT NULL,
+    review_text TEXT,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
+    CHECK (rating >= 1 AND rating <= 5) -- Ensure rating is between 1 and 5
+);
+```
+
+### Explanation:
+1. **Users Table**:
+   - `id`: Unique identifier for each user, auto-incremented.
+   - `name`: The name of the user, which is required.
+
+2. **Books Table**:
+   - `id`: Unique identifier for each book, auto-incremented.
+   - `title`: The title of the book, which is required.
+
+3. **Reviews Table**:
+   - `id`: Unique identifier for each review, auto-incremented.
+   - `user_id`: Foreign key referencing the `id` in the `users` table, ensures that each review is associated with a valid user.
+   - `book_id`: Foreign key referencing the `id` in the `books` table, ensures that each review is associated with a valid book.
+   - `rating`: The rating given by the user, constrained to be between 1 and 5.
+   - `review_text`: Optional field to store the text of the review.
+   - `ON DELETE CASCADE`: Ensures that if a user or book is deleted, all associated reviews are also deleted to maintain data integrity.
+
+This schema ensures that:
+- Each review is associated with a valid user and book.
+- Ratings are within the specified range.
+- Data integrity is maintained through foreign key constraints and cascading deletes.

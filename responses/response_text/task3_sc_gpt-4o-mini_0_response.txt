@@ -1,0 +1,9 @@
+The function `getArray` contains a specific type of bug known as a **dangling pointer** bug. Here’s a breakdown of the issue:
+
+1. **Local Array Creation**: `int arr[size];` creates a local array `arr` within the function's scope. This array is allocated on the stack.
+
+2. **Returning Pointer**: The function returns a pointer to this local array with `return arr;`. However, once the function exits, the local variables (including `arr`) go out of scope, and the memory they occupy may be reclaimed for other purposes.
+
+3. **Dangling Pointer**: The pointer returned by the function now points to a memory location that is no longer valid (the stack memory of `arr` is no longer allocated). Accessing this pointer in the calling function can lead to undefined behavior, crashes, or data corruption.
+
+In summary, the bug is a **dangling pointer** resulting from returning a pointer to a local variable that goes out of scope when the function exits.

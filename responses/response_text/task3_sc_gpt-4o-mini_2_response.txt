@@ -1,0 +1,11 @@
+The bug in the provided C++ function can be classified as a **dangling pointer** issue. 
+
+Here’s a breakdown of the problem:
+
+1. **Local Array Creation**: The line `int arr[size];` creates a local array on the stack. This array's lifetime is limited to the scope of the function `getArray`.
+
+2. **Returning a Pointer to a Local Variable**: When the function returns `arr` with `return arr;`, it returns a pointer to the local variable `arr`. Once the function exits, the local variable `arr` goes out of scope and is destroyed.
+
+3. **Dangling Pointer**: The returned pointer points to memory that is no longer valid (since `arr` has been destroyed). Accessing this pointer outside of the function will lead to undefined behavior.
+
+To summarize, the main issue here is that the function returns a pointer to a local variable, resulting in a dangling pointer. This can lead to serious runtime errors if the returned pointer is dereferenced after the function has returned.

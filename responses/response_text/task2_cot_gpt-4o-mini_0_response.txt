@@ -1,0 +1,46 @@
+The function `sum_range(start, end)` is intended to calculate the sum of all integers from `start` to `end`, inclusive of `start`, but exclusive of `end`. This means that the current implementation does not include the `end` value in the summation, which is likely what the user wants.
+
+Here's how we can identify and fix the off-by-one error step-by-step:
+
+### Step 1: Understand the current behavior
+The current function uses `range(start, end)`, which generates numbers starting from `start` up to, but not including, `end`. For example:
+- If `start = 1` and `end = 5`, the function sums `1 + 2 + 3 + 4` (not including `5`).
+
+### Step 2: Determine the desired behavior
+To include `end` in the summation, we need to adjust the range. We want the summation to include all integers from `start` to `end`, inclusive of both.
+
+### Step 3: Modify the range
+To include `end`, we can change the `range` function to go up to `end + 1`. This will include the `end` value in the summation.
+
+### Step 4: Update the code
+We will update the line where `range` is called:
+
+```python
+def sum_range(start, end): 
+    total = 0 
+    for i in range(start, end + 1):  # Fix here: change end to end + 1
+        total += i 
+    return total
+```
+
+### Step 5: Test the function
+After making this change, we should test the function to ensure it behaves as expected:
+
+```python
+print(sum_range(1, 5))  # Should output 15 (1 + 2 + 3 + 4 + 5)
+print(sum_range(3, 3))  # Should output 3 (only 3)
+print(sum_range(0, 2))  # Should output 3 (0 + 1 + 2)
+```
+
+### Final Code
+Here's the final version of the function:
+
+```python
+def sum_range(start, end): 
+    total = 0 
+    for i in range(start, end + 1):  # Corrected to include end
+        total += i 
+    return total
+```
+
+Now the function correctly sums numbers from `start` to `end`, inclusive.

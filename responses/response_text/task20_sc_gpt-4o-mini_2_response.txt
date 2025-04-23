@@ -1,0 +1,23 @@
+To complete the function `calculate_average(scores)` that calculates the average of a list of scores, you can follow these steps:
+
+1. Calculate the total sum of the scores.
+2. Count the number of scores.
+3. Return the average by dividing the total sum by the number of scores.
+4. Handle the case where the list of scores might be empty to avoid division by zero.
+
+Here is the completed function:
+
+```python
+def calculate_average(scores): 
+    total = sum(scores)  # Calculate the total sum of the scores
+    count = len(scores)  # Get the number of scores
+    
+    # Check to avoid division by zero
+    if count == 0:
+        return 0  # or return None, depending on how you want to handle empty input
+    
+    average = total / count  # Calculate the average
+    return average  # Return the computed average
+```
+
+This function will now correctly compute the average of the scores passed to it, while also handling the case of an empty list.

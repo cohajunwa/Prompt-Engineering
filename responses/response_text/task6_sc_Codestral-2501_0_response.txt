@@ -1,0 +1,73 @@
+Sure, here's a schema for a review app with appropriate keys and constraints:
+
+### Schema Design
+
+#### Users Table
+- **id**: Unique identifier for the user (Primary Key)
+- **name**: Name of the user
+
+#### Books Table
+- **id**: Unique identifier for the book (Primary Key)
+- **title**: Title of the book
+
+#### Reviews Table
+- **id**: Unique identifier for the review (Primary Key)
+- **user_id**: Foreign key referencing the Users table
+- **book_id**: Foreign key referencing the Books table
+- **rating**: Rating given to the book (e.g., 1-5 stars)
+
+### SQL Schema
+
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    book_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (book_id) REFERENCES books(id)
+);
+```
+
+### Explanation
+
+1. **Users Table**:
+   - `id`: Auto-incrementing primary key.
+   - `name`: Name of the user, with a constraint to ensure it is not null.
+
+2. **Books Table**:
+   - `id`: Auto-incrementing primary key.
+   - `title`: Title of the book, with a constraint to ensure it is not null.
+
+3. **Reviews Table**:
+   - `id`: Auto-incrementing primary key.
+   - `user_id`: Foreign key that references the `id` column in the `users` table to ensure that each review is associated with a valid user.
+   - `book_id`: Foreign key that references the `id` column in the `books` table to ensure that each review is associated with a valid book.
+   - `rating`: An integer between 1 and 5 to represent the rating given to the book, enforced by a check constraint.
+
+### Additional Considerations
+
+- **UNIQUE Constraints**: Depending on the application, you might want to ensure that a user can only review a book once. In that case, you could add a unique constraint on the combination of `user_id` and `book_id` in the `reviews` table.
+
+  ```sql
+  CREATE UNIQUE INDEX unique_user_book_review ON reviews(user_id, book_id);
+  ```
+
+- **Indexes**: Adding indexes on foreign keys can improve query performance.
+
+  ```sql
+  CREATE INDEX idx_user_id ON reviews(user_id);
+  CREATE INDEX idx_book_id ON reviews(book_id);
+  ```
+
+This schema ensures data integrity and provides the necessary structure for a review application.

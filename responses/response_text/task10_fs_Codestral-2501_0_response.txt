@@ -1,0 +1,8 @@
+Sure, here's a summary for the given function:
+
+```python
+def reverse_words(sentence):
+    return ''.join(sentence.split()[::-1])
+```
+
+Summary: This function takes a sentence as input, splits it into words, reverses the order of the words, and then joins them back into a single string. The resulting string has the words in the sentence reversed.

@@ -1,0 +1,95 @@
+To implement node deletion by value in a linked list, you need to follow these steps:
+
+1. **Handle the case where the list is empty.**
+2. **Handle the case where the node to be deleted is the head of the list.**
+3. **Traverse the list to find the node to be deleted.**
+4. **Adjust the pointers to remove the node.**
+5. **Handle the case where the node to be deleted is not found.**
+
+Here's the step-by-step implementation of the `deleteNode` function:
+
+```c
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void deleteNode(struct Node** head, int key) {
+    // Step 1: Check if the list is empty
+    if (*head == NULL) {
+        printf("The list is empty\n");
+        return;
+    }
+
+    // Step 2: Check if the head node is the node to be deleted
+    struct Node* temp = *head;
+    if (temp->data == key) {
+        *head = temp->next; // Change head
+        free(temp);         // Free old head
+        return;
+    }
+
+    // Step 3: Traverse the list to find the node to be deleted
+    struct Node* prev = NULL;
+    while (temp != NULL && temp->data != key) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // Step 4: If key was not present in the linked list
+    if (temp == NULL) {
+        printf("Key not found in the list\n");
+        return;
+    }
+
+    // Step 5: Unlink the node from the linked list
+    prev->next = temp->next;
+    free(temp); // Free the memory
+}
+
+```
+
+### Explanation:
+
+1. **Check if the list is empty:**
+   ```c
+   if (*head == NULL) {
+       printf("The list is empty\n");
+       return;
+   }
+   ```
+
+2. **Check if the head node is the node to be deleted:**
+   ```c
+   struct Node* temp = *head;
+   if (temp->data == key) {
+       *head = temp->next; // Change head
+       free(temp);         // Free old head
+       return;
+   }
+   ```
+
+3. **Traverse the list to find the node to be deleted:**
+   ```c
+   struct Node* prev = NULL;
+   while (temp != NULL && temp->data != key) {
+       prev = temp;
+       temp = temp->next;
+   }
+   ```
+
+4. **Check if the node to be deleted is not found:**
+   ```c
+   if (temp == NULL) {
+       printf("Key not found in the list\n");
+       return;
+   }
+   ```
+
+5. **Unlink the node from the linked list and free the memory:**
+   ```c
+   prev->next = temp->next;
+   free(temp); // Free the memory
+   ```
+
+This implementation ensures that the node with the specified value is deleted correctly from the linked list. If the node is not found, it prints a message indicating that the key was not found. If the list is empty, it prints a message indicating that the list is empty.

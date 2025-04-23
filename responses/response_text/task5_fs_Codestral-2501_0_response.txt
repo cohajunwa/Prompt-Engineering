@@ -1,0 +1,32 @@
+Sure! Below is the code for the `/greet/<username>` endpoint that returns a JSON greeting:
+
+```python
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route('/greet/<username>')
+def greet(username):
+    greeting = {
+        "message": f"Hello, {username}!"
+    }
+    return jsonify(greeting)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+In this code:
+- The `/greet/<username>` endpoint takes a URL parameter `username`.
+- The `greet` function constructs a JSON response containing a greeting message.
+- The `jsonify` function from Flask is used to convert the dictionary into a JSON response.
+
+When you navigate to `/greet/alice`, for example, the response will be:
+
+```json
+{
+  "message": "Hello, alice!"
+}
+```
+
+You can run this Flask application, and it will serve the greeting endpoint.

@@ -1,0 +1,52 @@
+The bug in the provided C++ function is a **dangling pointer** issue. Here is a detailed explanation:
+
+```cpp
+int * getArray(int size){
+    int arr [size]; // Warning: local array
+    return arr; // Bug: returning pointer to local variable
+}
+```
+
+### Explanation:
+
+1. **Local Array**:
+   - `int arr[size];` declares an array `arr` with `size` elements. This array is allocated on the stack, which means it has automatic storage duration.
+
+2. **Returning a Pointer to a Local Variable**:
+   - The function `getArray` returns a pointer to `arr`. However, `arr` is a local variable and will be deallocated as soon as the function `getArray` returns. Returning a pointer to a local variable that goes out of scope results in a dangling pointer.
+
+### Consequence:
+
+- When `getArray` returns, the memory allocated for `arr` is deallocated because it was allocated on the stack.
+- Any subsequent use of the returned pointer will lead to undefined behavior, as it will point to memory that has been freed.
+
+### Warning:
+
+- The comment `// Warning: local array` correctly points out that `arr` is a local array, but the comment `// Bug: returning pointer to local variable` accurately describes the problem.
+
+### Fix:
+
+To fix this issue, you can use dynamic memory allocation with `new[]` and ensure that the memory is properly deallocated using `delete[]` when it is no longer needed. Here is an example of how you can modify the function:
+
+```cpp
+int * getArray(int size){
+    int *arr = new int[size]; // Dynamically allocate array
+    return arr; // Return pointer to dynamically allocated array
+}
+
+// Don't forget to deallocate the memory when done
+// delete[] arr;
+```
+
+Alternatively, you can use `std::vector<int>` from the C++ Standard Library, which manages its own memory and ensures proper deallocation:
+
+```cpp
+#include <vector>
+
+std::vector<int> getArray(int size) {
+    std::vector<int> arr(size); // Vector with size elements
+    return arr; // Return vector by value (efficient due to move semantics)
+}
+```
+
+Using `std::vector` is generally preferable in modern C++ because it handles memory management for you and avoids the issues associated with manual memory allocation.

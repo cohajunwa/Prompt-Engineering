@@ -1,0 +1,35 @@
+Certainly! To complete the `is_valid_email` function using the provided regex expression, you can follow these steps:
+
+1. Import the `re` module, which provides support for regular expressions in Python.
+2. Define the regex pattern for basic email validation.
+3. Use the `re.match` function to check if the input email matches the regex pattern.
+4. Return `True` if the email matches the pattern, otherwise return `False`.
+
+Here is the completed function:
+
+```python
+import re
+
+def is_valid_email(email):
+    # Define the regex pattern for basic email validation
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+    # Use re.match to check if the email matches the pattern
+    if re.match(pattern, email):
+        return True
+    else:
+        return False
+
+# Test the function
+print(is_valid_email("example@example.com"))  # Should return True
+print(is_valid_email("invalid-email@.com"))  # Should return False
+```
+
+### Explanation:
+
+1. **Import the `re` module**: This module provides functions to work with regular expressions.
+2. **Define the regex pattern**: The pattern `r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'` is used to match basic email addresses.
+3. **Use `re.match`**: This function checks if the email string matches the regex pattern. If it matches, `re.match` returns a match object; otherwise, it returns `None`.
+4. **Return `True` or `False`**: Based on the result of `re.match`, the function returns `True` if the email is valid and `False` otherwise.
+
+You can test the function with different email addresses to ensure it works as expected.

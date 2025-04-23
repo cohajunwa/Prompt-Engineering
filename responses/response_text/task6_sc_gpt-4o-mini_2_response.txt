@@ -1,0 +1,52 @@
+To design a schema for a review app with users, books, and reviews, we will define three main tables: `users`, `books`, and `reviews`. We will also include primary keys, foreign keys, and relevant constraints to ensure data integrity.
+
+Here’s a schema definition for the app:
+
+### Table: users
+- **id** (Primary Key, INT, Auto Increment): Unique identifier for each user.
+- **name** (VARCHAR(255), NOT NULL): Name of the user. This field cannot be null.
+
+### Table: books
+- **id** (Primary Key, INT, Auto Increment): Unique identifier for each book.
+- **title** (VARCHAR(255), NOT NULL): Title of the book. This field cannot be null.
+
+### Table: reviews
+- **id** (Primary Key, INT, Auto Increment): Unique identifier for each review.
+- **user_id** (INT, NOT NULL): Foreign key referencing `users(id)`. This establishes a relationship between reviews and users. It cannot be null.
+- **book_id** (INT, NOT NULL): Foreign key referencing `books(id)`. This establishes a relationship between reviews and books. It cannot be null.
+- **rating** (INT, CHECK (rating >= 1 AND rating <= 5), NOT NULL): The rating given by the user for the book, constrained to be between 1 and 5. It cannot be null.
+
+### SQL Schema Definition
+
+```sql
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE books (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    book_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
+    UNIQUE (user_id, book_id)  -- Ensures that a user can only review a book once
+);
+```
+
+### Explanation of Constraints:
+1. **Primary Keys**: Each table has a primary key that uniquely identifies each record.
+2. **Foreign Keys**: 
+   - `user_id` in the `reviews` table references the `id` in the `users` table, establishing a connection between reviews and users.
+   - `book_id` in the `reviews` table references the `id` in the `books` table, establishing a connection between reviews and books.
+3. **NOT NULL Constraints**: Fields that should not be empty are marked with `NOT NULL`.
+4. **CHECK Constraint**: The `rating` field in the `reviews` table is constrained to ensure that the value is between 1 and 5.
+5. **UNIQUE Constraint**: The combination of `user_id` and `book_id` in the `reviews` table is unique, ensuring that a user can only leave one review per book.
+
+This schema provides a robust structure for managing users, books, and their associated reviews in a review application.

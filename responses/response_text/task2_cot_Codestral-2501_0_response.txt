@@ -1,0 +1,39 @@
+An off-by-one error typically occurs when the loop does not include the intended range of values. In the provided `sum_range` function, the loop starts at `start` and ends before `end`, which means it includes all numbers from `start` to `end-1`. To fix this, we need to adjust the loop to include `end` in the range.
+
+Let's go through the steps to fix the function:
+
+1. **Understand the current behavior**:
+   - The loop `for i in range(start, end):` iterates from `start` to `end-1`.
+
+2. **Identify the intended behavior**:
+   - We want to include `end` in the sum.
+
+3. **Correct the range**:
+   - Change `range(start, end)` to `range(start, end + 1)` to include `end` in the sum.
+
+Here is the corrected function:
+
+```python
+def sum_range(start, end):
+    total = 0
+    for i in range(start, end + 1):
+        total += i
+    return total
+```
+
+### Explanation:
+- `range(start, end + 1)` will now include `end` in the loop, so the loop will iterate from `start` to `end`.
+
+### Example:
+For `sum_range(1, 3)`, the corrected function will sum the numbers 1, 2, and 3, giving a total of 6.
+
+### Testing:
+Let's test the function with some examples to ensure it works correctly:
+
+```python
+print(sum_range(1, 3))  # Should return 6 (1 + 2 + 3)
+print(sum_range(1, 1))  # Should return 1
+print(sum_range(0, 5))  # Should return 15 (0 + 1 + 2 + 3 + 4 + 5)
+```
+
+With these changes, the function should now correctly sum all numbers in the given range, including the `end` value.

@@ -1,0 +1,56 @@
+Certainly! Below is a schema design for a review app with tables for `users`, `books`, and `reviews`. This schema includes appropriate keys and constraints to ensure data integrity and relationships between the tables.
+
+### Users Table
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    UNIQUE (name)
+);
+```
+
+### Books Table
+```sql
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    UNIQUE (title)
+);
+```
+
+### Reviews Table
+```sql
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    book_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    review_text TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
+    UNIQUE (user_id, book_id) -- Ensures a user can only review a book once
+);
+```
+
+### Explanation:
+1. **Users Table**:
+   - `id`: A unique identifier for each user, auto-incrementing.
+   - `name`: The name of the user, which must be unique.
+   - `UNIQUE (name)`: Ensures that no two users can have the same name.
+
+2. **Books Table**:
+   - `id`: A unique identifier for each book, auto-incrementing.
+   - `title`: The title of the book, which must be unique.
+   - `UNIQUE (title)`: Ensures that no two books can have the same title.
+
+3. **Reviews Table**:
+   - `id`: A unique identifier for each review, auto-incrementing.
+   - `user_id`: The identifier of the user who wrote the review, with a foreign key constraint referencing the `users` table.
+   - `book_id`: The identifier of the book being reviewed, with a foreign key constraint referencing the `books` table.
+   - `rating`: The rating given to the book, constrained to be between 1 and 5.
+   - `review_text`: Optional text of the review.
+   - `FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE`: Ensures referential integrity between reviews and users. If a user is deleted, their reviews will also be deleted.
+   - `FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE`: Ensures referential integrity between reviews and books. If a book is deleted, its reviews will also be deleted.
+   - `UNIQUE (user_id, book_id)`: Ensures that a user can only review a specific book once.
+
+This schema design ensures that the relationships between users, books, and reviews are maintained, and that the data remains consistent and valid.

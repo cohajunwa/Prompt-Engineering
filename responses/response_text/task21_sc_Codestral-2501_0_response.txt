@@ -1,0 +1,119 @@
+Let's analyze the given utility script for potential logic issues, design flaws, and then refactor it for better readability, correctness, and safety.
+
+### Analysis:
+
+1. **Syntax Errors**:
+   - The script contains several typographical errors in the string literals (e.g., `’data .csv ’` instead of `'data.csv'`).
+
+2. **Indentation**:
+   - The function `read_csv` is missing proper indentation for the `return` statement.
+
+3. **Error Handling**:
+   - There is no error handling for file operations or data parsing, which could lead to crashes or unexpected behavior if the file doesn't exist or is not properly formatted.
+
+4. **Magic Numbers**:
+   - The column index `1` is hardcoded in the `main` function, making it less flexible.
+
+5. **Documentation**:
+   - There is a lack of comments or docstrings, which could make the code harder to understand.
+
+6. **String Formatting**:
+   - The use of string concatenation for printing results could be improved for better readability.
+
+### Refactoring:
+
+Here is the refactored version of the script:
+
+```python
+# utils.py - Script to parse and summarize numeric CSV files
+
+import csv
+import sys
+
+def read_csv(filepath):
+    """
+    Reads a CSV file and returns its contents as a list of rows.
+
+    Args:
+        filepath (str): The path to the CSV file.
+
+    Returns:
+        list: A list of rows from the CSV file.
+    """
+    try:
+        with open(filepath, 'r') as f:
+            return [row for row in csv.reader(f)]
+    except FileNotFoundError:
+        print(f"Error: The file {filepath} does not exist.")
+        sys.exit(1)
+    except Exception as e:
+        print(f"An error occurred while reading the file: {e}")
+        sys.exit(1)
+
+def summarize_column(data, index):
+    """
+    Summarizes a column in the CSV data by calculating the total and average.
+
+    Args:
+        data (list): The list of rows from the CSV file.
+        index (int): The index of the column to summarize.
+
+    Returns:
+        tuple: A tuple containing the total and average of the column.
+    """
+    try:
+        values = [float(row[index]) for row in data[1:]]  # skip header
+        total = sum(values)
+        avg = total / len(values)
+        return total, avg
+    except ValueError:
+        print(f"Error: The selected column index {index} has non-numeric data.")
+        sys.exit(1)
+    except IndexError:
+        print(f"Error: The selected column index {index} is out of range.")
+        sys.exit(1)
+
+def main():
+    """
+    Main function to read a CSV file and summarize a specified column.
+    """
+    filepath = 'data.csv'
+    column_index = 1  # Example column index
+
+    data = read_csv(filepath)
+    if not data:
+        print("No data to summarize.")
+        return
+
+    try:
+        total, avg = summarize_column(data, column_index)
+        print(f"Total: {total}")
+        print(f"Average: {avg}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == '__main__':
+    main()
+```
+
+### Improvements Made:
+
+1. **Fixed Syntax Issues**:
+   - Corrected string literals and ensured proper indentation.
+
+2. **Error Handling**:
+   - Added try-except blocks to handle file reading errors, non-numeric data, and out-of-range column indices.
+
+3. **Magic Numbers**:
+   - The column index is now a variable (`column_index`), making the script more flexible.
+
+4. **Documentation**:
+   - Added docstrings to all functions for better understanding.
+
+5. **String Formatting**:
+   - Improved the print statements for better readability using f-strings.
+
+6. **Graceful Exit**:
+   - Used `sys.exit(1)` to exit the program with an error status if an issue is encountered.
+
+This refactored script should be more robust, easier to understand, and safer to use.

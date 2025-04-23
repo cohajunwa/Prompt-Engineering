@@ -1,0 +1,54 @@
+To validate basic email addresses using regex in Python, we need to follow a few steps. Here’s how we can complete the `is_valid_email` function step-by-step:
+
+### Step 1: Import the `re` module
+We'll need the `re` module to work with regular expressions in Python.
+
+### Step 2: Define a Regex Pattern
+We need a regex pattern that matches the structure of a valid email address. A basic email format is typically defined as:
+- A local part (before the `@` symbol) which can contain letters, numbers, dots, underscores, and hyphens.
+- An `@` symbol.
+- A domain part (after the `@` symbol) which usually contains:
+  - Letters (for the domain name)
+  - Potentially numbers and hyphens
+  - A dot followed by a top-level domain (like .com, .org, etc.)
+
+A simple regex for this could be something like:
+```regex
+^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$
+```
+
+### Step 3: Implement the Function
+We will implement the function using the defined regex pattern and use the `re.match()` method to check if the email matches the pattern.
+
+Here’s the complete implementation:
+
+```python
+import re
+
+def is_valid_email(email):
+    # Define the regex pattern for validating an email
+    pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    
+    # Use re.match to check if the email matches the pattern
+    if re.match(pattern, email):
+        return True
+    else:
+        return False
+
+# Test the function with some examples
+print(is_valid_email("test@example.com"))  # True
+print(is_valid_email("invalid-email"))      # False
+print(is_valid_email("user.name+tag@domain.co"))  # True
+print(is_valid_email("user@com"))            # False
+```
+
+### Explanation of the Regex:
+- `^`: Asserts the start of the string.
+- `[a-zA-Z0-9_.+-]+`: Matches one or more characters that can be letters, digits, dots, underscores, pluses, or hyphens (this is the local part of the email).
+- `@`: Matches the `@` symbol.
+- `[a-zA-Z0-9-]+`: Matches one or more characters that can be letters, digits, or hyphens (this is the domain part).
+- `\.`: Escapes the dot character to match a literal dot.
+- `[a-zA-Z0-9-.]+`: Matches one or more characters that can be letters, digits, dots, or hyphens (this is the TLD part).
+- `$`: Asserts the end of the string.
+
+This regex will cover a lot of valid email formats but does not account for every possible valid email per the full specification (RFC 5321/5322), which can be quite complex. However, it works well for basic validation scenarios.

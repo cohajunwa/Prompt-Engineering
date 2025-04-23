@@ -1,0 +1,49 @@
+The bug in the provided C++ function is a **dangling pointer bug**. Let's break down why this is the case:
+
+```cpp
+int * getArray(int size){
+    int arr [size]; // Warning: local array
+    return arr;     // Bug: returning pointer to local variable
+}
+```
+
+1. **Local Array Declaration**:
+   ```cpp
+   int arr [size];
+   ```
+   This line declares an array `arr` of size `size` within the scope of the `getArray` function. `arr` is a local variable, meaning it exists only within the lifetime of the function call.
+
+2. **Returning Pointer to Local Variable**:
+   ```cpp
+   return arr;
+   ```
+   This line attempts to return a pointer to the local array `arr`. However, once the function `getArray` returns, the local array `arr` goes out of scope, and the memory it occupied is no longer valid.
+
+3. **Dangling Pointer**:
+   When the function returns a pointer to a local variable that has gone out of scope, the returned pointer becomes a **dangling pointer**. A dangling pointer is a pointer that refers to memory that may have been deallocated or is no longer valid. Using a dangling pointer can lead to undefined behavior, such as accessing undefined or deallocated memory.
+
+### Correct Approach
+
+To fix this bug, you should dynamically allocate memory for the array using `new` and ensure that the memory is properly deallocated using `delete`. Here is a corrected version of the function:
+
+```cpp
+int * getArray(int size) {
+    int *arr = new int[size]; // Dynamically allocate memory
+    return arr; // Return the pointer to the allocated memory
+}
+
+// Ensure to delete the allocated memory when no longer needed to avoid memory leaks
+```
+
+Or, if you prefer to avoid manual memory management, you can use a `std::vector` from the C++ Standard Library, which handles memory management automatically:
+
+```cpp
+#include <vector>
+
+std::vector<int> getArray(int size) {
+    std::vector<int> arr(size); // Use std::vector to manage memory
+    return arr; // Return the vector by value
+}
+```
+
+Using `std::vector` is generally recommended for dynamic arrays in C++ because it handles memory management for you, reducing the risk of memory leaks and dangling pointers.

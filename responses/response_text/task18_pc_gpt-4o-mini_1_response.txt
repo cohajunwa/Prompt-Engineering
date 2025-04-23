@@ -1,0 +1,12 @@
+Here is the corrected version of the `isEven` function that properly returns a boolean value indicating whether the number is even:
+
+```javascript
+function isEven(n) { 
+    return n % 2 === 0; // Returns true for even numbers, false for odd numbers
+}
+```
+
+### Explanation:
+- The expression `n % 2` checks the remainder when `n` is divided by `2`.
+- The comparison `=== 0` checks if the remainder is zero, which means `n` is even.
+- If `n` is even, the function returns `true`; if it's odd, it returns `false`.

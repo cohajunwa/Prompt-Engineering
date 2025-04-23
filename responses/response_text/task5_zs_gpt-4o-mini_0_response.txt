@@ -1,0 +1,33 @@
+To create the `/greet/<username>` endpoint that returns a JSON greeting in a Flask application, you can implement the function to return a JSON response. Here's how you can complete your code:
+
+```python
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route('/greet/<username>')
+def greet(username):
+    # Create a greeting message
+    greeting_message = f"Hello, {username}!"
+    
+    # Return the greeting as a JSON response
+    return jsonify({'greeting': greeting_message})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+### Explanation:
+- We define the `/greet/<username>` route which takes a `username` parameter from the URL.
+- Inside the `greet` function, we create a greeting message using the provided username.
+- We return this message in JSON format using `jsonify()`, which automatically sets the appropriate content type (`application/json`).
+- The `if __name__ == '__main__':` block ensures that the Flask application runs when the script is executed directly.
+
+### Testing the Endpoint:
+Once you run this Flask application, you can test the endpoint by visiting a URL like `http://127.0.0.1:5000/greet/John` in your web browser or using a tool like Postman or curl. You should see a JSON response like this:
+
+```json
+{
+  "greeting": "Hello, John!"
+}
+```

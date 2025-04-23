@@ -1,0 +1,49 @@
+To improve the parser to support quoted fields, we can use the `csv` module in Python, which provides robust functionality for parsing CSV (Comma-Separated Values) files, including handling quoted fields. Here's a more detailed implementation:
+
+```python
+import csv
+import io
+
+def parse_csv_line(line):
+    # Create a csv reader object which will iterate over lines in the given CSV string
+    reader = csv.reader(io.StringIO(line))
+    # Return the first (and only) row from the reader
+    return next(reader)
+
+# Example usage:
+line = '"John Doe","john.doe@example.com","123 Main St, Apt 4","30"'
+parsed_line = parse_csv_line(line)
+print(parsed_line)
+```
+
+### Explanation:
+1. **csv Module**: The `csv` module in Python provides functionality to handle CSV files, including fields that contain special characters like commas or quotes.
+2. **StringIO**: The `io.StringIO` class is used to create an in-memory file-like object from the input string `line`. This allows the `csv.reader` to process the string as if it were reading from a file.
+3. **csv.reader**: The `csv.reader` object is created with the `io.StringIO` object. The `next(reader)` function call retrieves the first (and only) line from the reader, which is a list of fields.
+
+### Example Usage:
+In the example usage, the input string `line` contains a CSV line with quoted fields. The `parse_csv_line` function correctly parses this line and returns a list of fields, even though some fields contain commas.
+
+### Handling Multiple Lines:
+If you need to parse multiple lines of CSV data, you can modify the function to handle an iterable of lines:
+
+```python
+import csv
+import io
+
+def parse_csv_lines(lines):
+    # Create a csv reader object which will iterate over lines in the given iterable
+    reader = csv.reader(lines)
+    # Return a list of parsed rows
+    return list(reader)
+
+# Example usage:
+lines = [
+    '"John Doe","john.doe@example.com","123 Main St, Apt 4","30"',
+    '"Jane Smith","jane.smith@example.com","456 Elm St, Suite 2","25"'
+]
+parsed_lines = parse_csv_lines(lines)
+print(parsed_lines)
+```
+
+In this version, the `parse_csv_lines` function takes an iterable of lines and returns a list of parsed rows. This is useful for parsing multi-line CSV data.

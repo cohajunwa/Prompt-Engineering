@@ -1,0 +1,115 @@
+To implement the deletion of a node by its value in a linked list, we need to traverse the list to find the node containing the specified value (key). Once we find the node, we will remove it from the list and free its memory. We also need to handle cases where the node to delete is the head of the list or when the list is empty.
+
+Here's the implementation of the `deleteNode` function:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node { 
+    int data; 
+    struct Node* next;
+}; 
+
+void deleteNode(struct Node** head, int key) { 
+    // Check if the list is empty
+    if (*head == NULL) {
+        return;
+    }
+
+    // Initialize pointers
+    struct Node* temp = *head; // Current node
+    struct Node* prev = NULL;  // Previous node
+
+    // Check for the node to delete at the head
+    if (temp != NULL && temp->data == key) {
+        *head = temp->next; // Change head
+        free(temp);         // Free the old head
+        return;
+    }
+
+    // Traverse the list to find the node to delete
+    while (temp != NULL && temp->data != key) {
+        prev = temp;       // Keep track of the previous node
+        temp = temp->next; // Move to the next node
+    }
+
+    // If the node was not found
+    if (temp == NULL) {
+        return; // Key not found, do nothing
+    }
+
+    // Unlink the node from the linked list
+    prev->next = temp->next; // Bypass the node to be deleted
+    free(temp);              // Free the memory of the node
+}
+
+// Helper function to create a new node
+struct Node* newNode(int data) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+    return node;
+}
+
+// Helper function to print the linked list
+void printList(struct Node* node) {
+    while (node != NULL) {
+        printf("%d -> ", node->data);
+        node = node->next;
+    }
+    printf("NULL\n");
+}
+
+// Example usage
+int main() {
+    struct Node* head = newNode(1);
+    head->next = newNode(2);
+    head->next->next = newNode(3);
+    head->next->next->next = newNode(4);
+
+    printf("Original list: ");
+    printList(head);
+
+    deleteNode(&head, 3);
+    printf("List after deleting 3: ");
+    printList(head);
+
+    deleteNode(&head, 1);
+    printf("List after deleting 1: ");
+    printList(head);
+
+    deleteNode(&head, 5); // Trying to delete a non-existing value
+    printf("List after trying to delete 5: ");
+    printList(head);
+
+    // Free remaining nodes
+    while (head != NULL) {
+        struct Node* temp = head;
+        head = head->next;
+        free(temp);
+    }
+
+    return 0;
+}
+```
+
+### Explanation:
+
+1. **Function Structure**: 
+   - The `deleteNode` function takes a pointer to the head pointer (`struct Node** head`) and the key to be deleted.
+   
+2. **Empty List Check**: 
+   - If the list is empty (`*head == NULL`), we simply return since there's nothing to delete.
+
+3. **Head Node Deletion**: 
+   - If the node to delete is the head node, we update the head pointer to the next node and free the old head.
+
+4. **Traversal and Deletion**:
+   - We traverse the list using two pointers: `temp` (current node) and `prev` (previous node). If we find the node with the specified key, we unlink it from the list by updating the `next` pointer of the previous node and freeing the memory of the node to be deleted.
+
+5. **Testing**: 
+   - The `main` function demonstrates creating a linked list, printing it, deleting nodes, and printing the list again to show the changes. 
+
+6. **Memory Management**: 
+   - After the operations, we also free any remaining nodes to avoid memory leaks.

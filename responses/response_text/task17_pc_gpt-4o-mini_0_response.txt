@@ -1,0 +1,21 @@
+The inconsistency in the provided function lies in the function name and its logic. The function is named `isOdd`, which suggests that it is meant to check if the integer `x` is odd. However, the logic inside the function actually checks if `x` is even by returning `true` when `x % 2 == 0`.
+
+To correct the inconsistency, you can either rename the function to reflect its actual purpose or adjust the logic to match the intended function name. Here are both options:
+
+1. **Option 1: Rename the function to reflect its logic (to check for even numbers):**
+
+```cpp
+bool isEven(int x) { 
+    return x % 2 == 0; 
+}
+```
+
+2. **Option 2: Change the logic to match the function name (to check for odd numbers):**
+
+```cpp
+bool isOdd(int x) { 
+    return x % 2 != 0; 
+}
+```
+
+Choose one of the options based on the intended functionality of the function.

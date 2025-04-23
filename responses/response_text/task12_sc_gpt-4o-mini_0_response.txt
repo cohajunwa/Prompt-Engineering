@@ -1,0 +1,25 @@
+The issue with the provided `factorial` function is that it does not handle the case when the input is `0`. The factorial of `0` is defined to be `1`. Additionally, the loop in your code does not include `n` itself, which is not a problem for positive integers, but it leads to incorrect results.
+
+Here's how you can fix it:
+
+```python
+def factorial(n):
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers.")
+    result = 1 
+    for i in range(1, n + 1):  # Change range to include n
+        result *= i 
+    return result
+```
+
+With this modification:
+- If `n` is `0`, the result will correctly be `1`.
+- The loop now runs from `1` to `n` inclusive, ensuring that `n` itself is included in the multiplication.
+- An error is raised for negative inputs, as factorials for negative numbers are not defined. 
+
+You can test the function as follows:
+
+```python
+print(factorial(0))  # Output: 1
+print(factorial(5))  # Output: 120
+```

@@ -1,0 +1,114 @@
+To convert the `Product` data class into a REST API using Ktor, you'll need to set up a Ktor application with both GET and POST endpoints for handling `Product` objects. Below is an example of how you can achieve this.
+
+### Step 1: Set Up Ktor Project
+
+Make sure you have a Ktor project set up. You can use IntelliJ IDEA with the Ktor plugin or set it up manually by adding the necessary dependencies to your `build.gradle.kts` or `pom.xml`.
+
+For Gradle, add the following dependencies in your `build.gradle.kts` file:
+
+```kotlin
+dependencies {
+    implementation("io.ktor:ktor-server-core:2.x.x")
+    implementation("io.ktor:ktor-server-netty:2.x.x")
+    implementation("io.ktor:ktor-serialization:2.x.x")
+    implementation("io.ktor:ktor-server-html-builder:2.x.x")
+    implementation("ch.qos.logback:logback-classic:1.2.x")
+}
+```
+
+Replace `2.x.x` with the latest Ktor version available.
+
+### Step 2: Create the Ktor Application
+
+Create a new Kotlin file (e.g., `Application.kt`) and set up the Ktor application. Below is a basic implementation of a REST API with GET and POST endpoints for the `Product` data class.
+
+```kotlin
+import io.ktor.application.*
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.StatusPages
+import io.ktor.http.HttpStatusCode
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import io.ktor.request.receive
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlin.collections.mutableListOf
+
+@Serializable
+data class Product(val id: Int, val name: String, val price: Double)
+
+// In-memory storage for products
+val products = mutableListOf<Product>()
+
+fun main() {
+    embeddedServer(Netty, port = 8080, module = Application::module).start(wait = true)
+}
+
+fun Application.module() {
+    install(ContentNegotiation) {
+        json(Json { prettyPrint = true; isLenient = true })
+    }
+
+    // Handle exceptions
+    install(StatusPages) {
+        exception<Throwable> { cause ->
+            call.respond(HttpStatusCode.InternalServerError, cause.localizedMessage)
+        }
+    }
+
+    routing {
+        // GET all products
+        get("/products") {
+            call.respond(products)
+        }
+
+        // POST a new product
+        post("/products") {
+            val product = call.receive<Product>()
+            products.add(product)
+            call.respond(HttpStatusCode.Created, product)
+        }
+    }
+}
+```
+
+### Step 3: Run the Application
+
+Run the `Application.kt` file. The server will start on port 8080.
+
+### Step 4: Testing the API
+
+You can test the GET and POST endpoints using tools like Postman or CURL.
+
+1. **GET Request:**
+   ```
+   GET http://localhost:8080/products
+   ```
+
+   This will return an empty list initially.
+
+2. **POST Request:**
+   You can create a new product by sending a POST request with JSON data.
+
+   ```
+   POST http://localhost:8080/products
+   Content-Type: application/json
+
+   {
+       "id": 1,
+       "name": "Product 1",
+       "price": 9.99
+   }
+   ```
+
+   The server will respond with the created product and a `201 Created` status.
+
+3. **GET Again:**
+   After adding a product, you can send the GET request again to see the updated list of products.
+
+### Conclusion
+
+This example demonstrates how to create a simple REST API using Ktor for a `Product` data class with both GET and POST endpoints. You can expand upon this by adding more functionality, such as updating and deleting products, adding validation, or connecting to a database for persistent storage.

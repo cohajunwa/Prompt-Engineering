@@ -1,0 +1,36 @@
+The provided binary search implementation has a few issues that need to be addressed:
+
+1. **Missing Target Comparison**: The code does not compare the middle element with the target to determine whether to continue searching in the left or right half.
+2. **Missing Adjustment of `left` and `right`**: The code does not adjust the `left` and `right` pointers based on the comparison.
+3. **Return Statement Placement**: The return statement is placed outside the loop, which means it will always return `-1` if the loop completes without finding the target.
+
+Here is the corrected version of the binary search implementation:
+
+```java
+public int binarySearch(int[] arr, int target) {
+    int left = 0, right = arr.length - 1;
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        if (arr[mid] == target) {
+            return mid; // Target found
+        } else if (arr[mid] < target) {
+            left = mid + 1; // Search in the right half
+        } else {
+            right = mid - 1; // Search in the left half
+        }
+    }
+    return -1; // Target not found
+}
+```
+
+### Explanation of Changes:
+1. **Target Comparison**: Inside the loop, the middle element (`arr[mid]`) is compared with the target.
+   - If `arr[mid] == target`, the target is found, and the index `mid` is returned.
+   - If `arr[mid] < target`, it means the target must be in the right half, so `left` is updated to `mid + 1`.
+   - If `arr[mid] > target`, it means the target must be in the left half, so `right` is updated to `mid - 1`.
+
+2. **Adjustment of `left` and `right`**: The pointers `left` and `right` are adjusted based on the comparison to narrow down the search range.
+
+3. **Return Statement Placement**: The return statement `-1` is placed outside the loop to indicate that the target was not found if the loop completes without finding the target.
+
+This ensures that the binary search algorithm correctly finds the target element or determines that it is not present in the array.

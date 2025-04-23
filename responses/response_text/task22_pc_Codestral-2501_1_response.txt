@@ -1,0 +1,55 @@
+Here's the completed script with the `clean_line` function implemented to remove punctuation and convert text to lowercase. Additionally, I've added some error handling to make the script more robust.
+
+```python
+# file_processor.py - Script for processing text files
+
+import string
+import os
+
+def load_file(filepath):
+    """Load the contents of a file."""
+    if not os.path.exists(filepath):
+        print(f"Error: File '{filepath}' not found.")
+        return []
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return f.readlines()
+    except Exception as e:
+        print(f"Error reading file: {e}")
+        return []
+
+def clean_line(line):
+    """Remove punctuation and make the line lowercase."""
+    return line.translate(str.maketrans('', '', string.punctuation)).lower()
+
+def count_words(lines):
+    """Count the frequency of each word in the lines."""
+    word_counts = {}
+    for line in lines:
+        clean = clean_line(line)
+        for word in clean.split():
+            word_counts[word] = word_counts.get(word, 0) + 1
+    return word_counts
+
+def main():
+    """Main function to execute the word counting process."""
+    filepath = 'input.txt'
+    lines = load_file(filepath)
+    if not lines:
+        return
+    counts = count_words(lines)
+    for word, count in sorted(counts.items()):
+        print(f"{word}: {count}")
+
+if __name__ == '__main__':
+    main()
+```
+
+### Explanation of Changes:
+1. **Error Handling in `load_file`**:
+   - Checked if the file exists before attempting to open it.
+   - Added a try-except block to catch and report any errors that occur during file reading.
+2. **Encoding Specification**: Specified `utf-8` encoding when opening the file to ensure compatibility with a wide range of text files.
+3. **Robustness in `main`**: Added a check to ensure that the script does not proceed with counting words if the file reading fails.
+
+With these additions, the script is now more robust and user-friendly. It will handle missing files and reading errors gracefully, providing clear error messages when something goes wrong.

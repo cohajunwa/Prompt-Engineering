@@ -1,0 +1,23 @@
+The type of bug in the provided C++ function is a **dangling pointer** issue. 
+
+### Explanation:
+- In the function `getArray`, an array `arr` is created with a size determined by the parameter `size`. This array is allocated on the stack because it is a local variable.
+- When the function returns, the local variable `arr` goes out of scope, and the memory allocated for it is no longer valid. Therefore, returning a pointer to this local array means that the caller will receive a pointer to memory that has been deallocated when the function exits.
+- As a result, any attempt to access this pointer after the function returns leads to undefined behavior, as it points to a location in memory that is no longer reserved for the array.
+
+To fix this issue, you can allocate the array on the heap using `new` and ensure that the caller is responsible for freeing the memory with `delete[]`:
+
+```cpp
+int* getArray(int size) {
+    int* arr = new int[size]; // Allocate on the heap
+    return arr; // Now it's safe to return the pointer
+}
+```
+
+Remember to free the allocated memory in the calling code to avoid memory leaks:
+
+```cpp
+int* myArray = getArray(10);
+// Use myArray
+delete[] myArray; // Free the memory
+```

@@ -1,0 +1,22 @@
+To complete the `Person` class constructor, you can add parameters for `name`, `age`, and an optional `email`. Here's how you can do that:
+
+```python
+class Person: 
+    def __init__(self, name, age, email=None): 
+        self.name = name          # Assign name to the instance variable
+        self.age = age            # Assign age to the instance variable
+        self.email = email        # Assign email to the instance variable (default is None)
+```
+
+In this implementation:
+- The `name` and `age` parameters are required.
+- The `email` parameter is optional and defaults to `None` if not provided.
+
+You can create a `Person` object like this:
+
+```python
+person1 = Person("Alice", 30, "alice@example.com")
+person2 = Person("Bob", 25)  # email will be None
+```
+
+This way, the class can handle both cases where an email is provided or not.

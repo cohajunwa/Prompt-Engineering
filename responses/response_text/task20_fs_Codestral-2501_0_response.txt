@@ -1,0 +1,11 @@
+To complete the function `calculate_average` based on the intent of calculating the average of a list of scores, you need to iterate through the list, sum the scores, and then divide by the number of scores to get the average. Here is the completed function:
+
+```python
+def calculate_average(scores):
+    total = 0
+    for score in scores:
+        total += score
+    return total / len(scores)
+```
+
+This function iterates over each score in the `scores` list, adds it to `total`, and then calculates the average by dividing `total` by the length of the `scores` list.

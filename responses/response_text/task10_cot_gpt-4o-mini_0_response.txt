@@ -1,0 +1,19 @@
+Let's break down the function `reverse_words(sentence)` step-by-step.
+
+1. **Function Definition**:
+   The function is defined with the name `reverse_words` and takes a single argument called `sentence`, which is expected to be a string.
+
+2. **Splitting the Sentence**:
+   Inside the function, the method `sentence.split()` is called. The `split()` method, when called without any arguments, splits the string into a list of words based on whitespace (spaces, tabs, etc.). For example, if `sentence` is `"Hello world"`, `sentence.split()` would produce the list `["Hello", "world"]`.
+
+3. **Reversing the List of Words**:
+   The slicing operation `[::-1]` is applied to the list produced by `split()`. This slice notation means "take the list and create a new list that is the reverse of the original." Continuing with our example, `["Hello", "world"][::-1]` would result in `["world", "Hello"]`.
+
+4. **Joining the Reversed List**:
+   The `join` method is then called on an empty string `''`, which concatenates the elements of the reversed list into a single string. By default, `join` uses an empty string as the separator, so no spaces will be added between the words. For example, `''.join(["world", "Hello"])` would produce the string `"worldHello"`.
+
+5. **Return Statement**:
+   Finally, the resulting string from the `join` operation is returned as the output of the function.
+
+### Summary:
+The `reverse_words(sentence)` function takes a string input (`sentence`), splits it into individual words, reverses the order of those words, and then concatenates them into a single string without any spaces between the words. For example, the input `"Hello world"` would produce the output `"worldHello"`.

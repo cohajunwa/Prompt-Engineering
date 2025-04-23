@@ -1,0 +1,116 @@
+To create a REST API using Ktor for the `Product` data class, you'll need to set up a Ktor application with endpoints for GET and POST requests. Below is a step-by-step guide to achieve this.
+
+1. **Set Up Your Project**:
+   - Ensure you have Ktor set up in your project. You can use Gradle to include Ktor dependencies in your `build.gradle.kts` file.
+
+2. **Create the Product Data Class**:
+   - Define the `Product` data class as you've already done.
+
+3. **Create the Ktor Application**:
+   - Set up the Ktor application and define the necessary routes and handlers.
+
+Here's a complete example:
+
+### 1. Add Dependencies
+
+Make sure you have the necessary Ktor dependencies in your `build.gradle.kts` file:
+
+```kotlin
+plugins {
+    kotlin("jvm") version "1.5.31"
+    id("io.ktor.plugin") version "2.0.0"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("io.ktor:ktor-server-core:2.0.0")
+    implementation("io.ktor:ktor-server-netty:2.0.0")
+    implementation("io.ktor:ktor-server-host-common:2.0.0")
+    implementation("io.ktor:ktor-server-content-negotiation:2.0.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
+    implementation("io.ktor:ktor-server-status-pages:2.0.0")
+    implementation("io.ktor:ktor-server-tests:2.0.0")
+    implementation("io.ktor:ktor-client-core:2.0.0")
+    implementation("io.ktor:ktor-client-cio:2.0.0")
+    testImplementation("io.ktor:ktor-server-test-host:2.0.0")
+}
+```
+
+### 2. Create the `Product` Data Class
+
+```kotlin
+data class Product(val id: Int, val name: String, val price: Double)
+```
+
+### 3. Set Up the Ktor Application
+
+Create a file `Application.kt` and set up the Ktor application:
+
+```kotlin
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.request.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import io.ktor.serialization.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import kotlinx.serialization.json.Json
+
+fun main() {
+    embeddedServer(Netty, port = 8080) {
+        install(ContentNegotiation) {
+            json(Json {
+                prettyPrint = true
+                isLenient = true
+            })
+        }
+
+        routing {
+            get("/products") {
+                call.respond(
+                    HttpStatusCode.OK,
+                    listOf(
+                        Product(1, "Product 1", 10.0),
+                        Product(2, "Product 2", 20.0)
+                    )
+                )
+            }
+
+            post("/products") {
+                val product = call.receive<Product>()
+                call.respond(HttpStatusCode.Created, product)
+            }
+        }
+    }.start(wait = true)
+}
+```
+
+### Explanation
+
+1. **Dependencies**:
+   - The `build.gradle.kts` file includes the necessary Ktor dependencies for server, content negotiation, serialization, and testing.
+
+2. **Product Data Class**:
+   - The `Product` data class is defined with properties `id`, `name`, and `price`.
+
+3. **Ktor Application**:
+   - The `embeddedServer` function starts a Netty server on port 8080.
+   - The `ContentNegotiation` feature is installed to handle JSON serialization.
+   - Two routes are defined:
+     - `GET /products` returns a list of `Product` objects.
+     - `POST /products` receives a `Product` object and responds with the created product.
+
+### Running the Application
+
+Run the application using your IDE or by executing the following command in the terminal:
+
+```sh
+./gradlew run
+```
+
+Now, you should have a running Ktor server with GET and POST endpoints for the `Product` resource. You can test these endpoints using tools like `curl`, Postman, or any HTTP client.

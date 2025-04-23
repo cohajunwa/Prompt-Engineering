@@ -1,0 +1,55 @@
+Here’s how you can complete the `file_processor.py` script step-by-step to achieve the goal of cleaning each line, removing punctuation, and counting the word frequencies correctly.
+
+1. **Implement the `clean_line` function**: This function will remove punctuation from a line and convert it to lowercase. We can use the `str.translate` method along with `string.punctuation` for this purpose.
+
+2. **Fix the indentation in the `count_words` function**: Ensure that the nested loops are correctly indented.
+
+3. **Correct the main check**: The `if __name__` check has incorrect quotes. Use standard single or double quotes.
+
+Here’s the completed script:
+
+```python
+# file_processor.py - Complete script for processing text files 
+
+import string 
+
+def load_file(filepath): 
+    with open(filepath, 'r') as f: 
+        return f.readlines() 
+
+def clean_line(line):
+    # Remove punctuation and make lowercase
+    translator = str.maketrans('', '', string.punctuation)  # Create a translation table for removing punctuation
+    cleaned_line = line.translate(translator).lower()  # Remove punctuation and convert to lowercase
+    return cleaned_line 
+
+def count_words(lines): 
+    word_counts = {} 
+    for line in lines: 
+        clean = clean_line(line) 
+        for word in clean.split():  # Split the cleaned line into words
+            word_counts[word] = word_counts.get(word, 0) + 1  # Count each word
+    return word_counts 
+
+def main():
+    filepath = 'input.txt' 
+    lines = load_file(filepath) 
+    counts = count_words(lines) 
+    for word, count in sorted(counts.items()): 
+        print(f"{word}: {count}") 
+
+if __name__ == '__main__':
+    main()
+```
+
+### Explanation of Changes:
+
+- **`clean_line` function**: This function now uses `str.maketrans` to create a translation table that removes all punctuation characters defined in `string.punctuation`. The line is then translated (punctuation removed) and converted to lowercase.
+
+- **Indentation Fix**: Fixed the indentation in the `count_words` function to ensure it correctly processes each line and word.
+
+- **Main Check Correction**: Changed the special quotes around `__main__` to standard single quotes to avoid syntax errors.
+
+### Usage:
+1. Create a file named `input.txt` in the same directory as this script with some text for processing.
+2. Run the script, and it will output the frequency of each word in alphabetical order.

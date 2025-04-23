@@ -1,0 +1,42 @@
+The bug in the provided C++ function is related to **returning a pointer to a local variable**. Specifically, the array `arr` is declared inside the function `getArray`. When the function returns, the memory allocated for `arr` is deallocated, and the pointer to `arr` becomes invalid. This is known as a **dangling pointer**.
+
+Here is the problematic line of code:
+
+```cpp
+return arr;
+```
+
+This line returns the address of the local array `arr`, which is automatically destroyed when the function `getArray` exits. Any attempt to use the returned pointer after the function call will lead to undefined behavior.
+
+To fix this issue, you can use dynamic memory allocation with `new` and return a pointer to the dynamically allocated array. You should also remember to deallocate the memory when it is no longer needed using `delete[]` to avoid memory leaks.
+
+Here is an example of how to modify the function:
+
+```cpp
+int* getArray(int size) {
+    int* arr = new int[size]; // Dynamically allocate memory for the array
+    return arr;
+}
+
+// Usage
+int* myArray = getArray(10);
+// ... use myArray ...
+delete[] myArray; // Don't forget to deallocate the memory
+```
+
+Alternatively, you can use `std::vector` from the C++ Standard Library, which manages memory automatically and is safer and more convenient:
+
+```cpp
+#include <vector>
+
+std::vector<int> getArray(int size) {
+    return std::vector<int>(size);
+}
+
+// Usage
+std::vector<int> myArray = getArray(10);
+// ... use myArray ...
+// No need to manually deallocate memory
+```
+
+Using `std::vector` is generally preferred in modern C++ because it handles memory management for you and reduces the risk of memory-related bugs.

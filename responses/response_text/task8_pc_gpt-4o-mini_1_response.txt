@@ -1,0 +1,63 @@
+To improve the CSV parser to handle quoted fields correctly, we can implement a custom parsing function that takes into account the presence of quotes, escaped quotes, and commas within quoted fields. Below is a Python implementation that addresses these issues:
+
+```python
+def parse_csv_line(line):
+    fields = []
+    current_field = []
+    inside_quotes = False
+
+    for char in line:
+        if char == '"':
+            # Toggle the inside_quotes state if we encounter a quote
+            inside_quotes = not inside_quotes
+        elif char == ',' and not inside_quotes:
+            # If we encounter a comma and we are not inside quotes, we have a complete field
+            fields.append(''.join(current_field).strip())
+            current_field = []  # Reset for the next field
+        else:
+            # Add the character to the current field
+            current_field.append(char)
+
+    # Add the last field after finishing the loop
+    fields.append(''.join(current_field).strip())
+
+    # Process escaped quotes in fields
+    for i in range(len(fields)):
+        fields[i] = fields[i].replace('""', '"')  # Unescape double quotes
+
+    return fields
+
+# Example usage
+line = '"John Doe", "123 Main St, Apt 4", "New York"'
+print(parse_csv_line(line))
+```
+
+### Explanation of the Code:
+1. **Initialization**: We start by initializing an empty list `fields` to store the parsed fields, an empty list `current_field` to accumulate characters for the current field, and a boolean `inside_quotes` to track whether we are currently inside a quoted field.
+
+2. **Iterate Through Characters**: We loop through each character in the input `line`.
+   - If we encounter a double quote (`"`), we toggle the `inside_quotes` state.
+   - If we encounter a comma (`,`), we check if we are not inside quotes. If we are outside quotes, it signifies the end of the current field, so we join the characters in `current_field`, strip any leading/trailing whitespace, and add it to `fields`. We then reset `current_field` for the next field.
+   - If the character is neither a quote nor a comma, we append it to `current_field`.
+
+3. **Add Remaining Field**: After the loop, we add the last field to `fields` since it won’t be followed by a comma.
+
+4. **Handle Escaped Quotes**: Finally, we process each field to replace double quotes (`""`) with a single quote (`"`), effectively unescaping any quotes that were escaped within the fields.
+
+### Edge Cases:
+This implementation addresses several edge cases:
+- Fields with commas inside quotes.
+- Fields that contain escaped quotes.
+- Leading and trailing spaces around fields.
+
+### Example Output:
+For the input:
+```python
+line = '"John Doe", "123 Main St, Apt 4", "New York"'
+```
+The output would be:
+```
+['John Doe', '123 Main St, Apt 4', 'New York']
+```
+
+This parser should work well for most typical CSV data. However, if you're dealing with CSV data that is particularly complex or non-standard, it may be beneficial to use the built-in `csv` module, which is optimized for handling various CSV formats and edge cases.

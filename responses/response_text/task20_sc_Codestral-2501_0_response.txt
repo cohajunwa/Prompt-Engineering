@@ -1,0 +1,29 @@
+To complete the `calculate_average` function, you need to iterate through the list of scores, sum them up, and then divide by the number of scores to get the average. Here's the complete function:
+
+```python
+def calculate_average(scores):
+    if not scores:  # Check if the list is empty
+        return 0
+
+    total = sum(scores)  # Sum all the scores
+    count = len(scores)  # Count the number of scores
+    average = total / count  # Calculate the average
+    return average
+```
+
+Here is a step-by-step explanation of the function:
+
+1. **Check for an empty list**: If the `scores` list is empty, returning 0 is a reasonable default value.
+2. **Sum the scores**: Use the `sum()` function to calculate the total of all scores in the list.
+3. **Count the scores**: Use the `len()` function to determine the number of scores in the list.
+4. **Calculate the average**: Divide the total sum by the count of scores to get the average.
+5. **Return the average**: Return the calculated average.
+
+You can test this function with a sample list of scores:
+
+```python
+scores = [85, 90, 78, 92, 88]
+print(calculate_average(scores))  # Output should be 86.2
+```
+
+This function should work correctly for any list of numerical scores.

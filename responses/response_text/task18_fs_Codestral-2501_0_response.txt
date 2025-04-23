@@ -1,0 +1,11 @@
+The bug in the `isEven` function is that it returns `1` or `0` instead of `true` or `false`. To fix this, we need to explicitly compare the result of `n % 2` to `0` and return the appropriate boolean value.
+
+Here is the corrected code:
+
+```javascript
+function isEven(n) {
+    return n % 2 === 0; // Returns true if n is even, false otherwise
+}
+```
+
+In this fixed version, the function will correctly return `true` if `n` is even and `false` if `n` is odd.

@@ -1,0 +1,41 @@
+A basic regex expression to validate email addresses can be constructed as follows. This regex checks for the general format of an email address, which consists of a local part, an "@" symbol, and a domain part.
+
+Here's a simple regex pattern for validating basic email addresses:
+
+```regex
+^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+```
+
+### Explanation:
+
+- `^` asserts the start of the string.
+- `[a-zA-Z0-9._%+-]+` matches the local part of the email (before the `@`):
+  - `a-zA-Z0-9` allows letters and digits.
+  - `._%+-` allows certain special characters.
+  - `+` means one or more of the preceding characters.
+- `@` matches the "@" symbol.
+- `[a-zA-Z0-9.-]+` matches the domain part (after the `@`):
+  - `a-zA-Z0-9` allows letters and digits.
+  - `.-` allows dots and hyphens in the domain.
+  - `+` means one or more of the preceding characters.
+- `\.` matches the literal dot before the top-level domain (TLD).
+- `[a-zA-Z]{2,}` matches the top-level domain (TLD), which must be at least two letters.
+- `$` asserts the end of the string.
+
+### Usage:
+
+You can use this regex in various programming languages to validate email addresses. Here's an example in Python:
+
+```python
+import re
+
+def is_valid_email(email):
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email) is not None
+
+# Example usage
+print(is_valid_email("example@test.com"))  # True
+print(is_valid_email("invalid-email@"))     # False
+```
+
+Keep in mind that this regex covers many common email formats, but email validation can be quite complex due to the variety of valid email formats defined by the specifications (RFC 5321 and RFC 5322). For comprehensive validation, consider using dedicated libraries or more complex regex patterns.

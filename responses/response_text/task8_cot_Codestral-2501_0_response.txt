@@ -1,0 +1,82 @@
+To improve the parser to support quoted fields, we need to take into account that fields enclosed in quotes might contain commas within them. Here is a step-by-step approach to achieve this:
+
+1. **Initial Setup**: Start with the existing function and add initial handling for quoted fields.
+2. **State Management**: Use a state variable to keep track of whether we are inside a quoted field.
+3. **Field Accumulation**: Accumulate characters into fields based on the state.
+4. **Handling Quotes**: Special handling for quotes within quoted fields.
+5. **Final Output**: Convert accumulated fields into the final output list.
+
+Let's go through these steps:
+
+### Step 1: Initial Setup
+First, let's start by setting up the function and initializing the necessary variables.
+
+```python
+def parse_csv_line(line):
+    fields = []
+    current_field = []
+    inside_quotes = False
+    for char in line:
+        if char == '"':
+            inside_quotes = not inside_quotes
+        elif char == ',':
+            if inside_quotes:
+                current_field.append(char)
+            else:
+                fields.append(''.join(current_field))
+                current_field = []
+        else:
+            current_field.append(char)
+    if current_field:
+        fields.append(''.join(current_field))
+    return fields
+```
+
+### Step 2: State Management
+We already have `inside_quotes` to manage whether we are inside a quoted field.
+
+### Step 3: Field Accumulation
+We accumulate characters into `current_field` and add the field to `fields` when we encounter a comma outside of quotes.
+
+### Step 4: Handling Quotes
+We toggle `inside_quotes` whenever we encounter a quote. Inside quotes, commas are treated as part of the field.
+
+### Step 5: Final Output
+After the loop, we need to add any remaining characters in `current_field` to `fields`.
+
+### Step 6: Test the Function
+Let's add some test cases to ensure the function works as expected.
+
+```python
+def parse_csv_line(line):
+    fields = []
+    current_field = []
+    inside_quotes = False
+    for char in line:
+        if char == '"':
+            inside_quotes = not inside_quotes
+        elif char == ',':
+            if inside_quotes:
+                current_field.append(char)
+            else:
+                fields.append(''.join(current_field))
+                current_field = []
+        else:
+            current_field.append(char)
+    if current_field:
+        fields.append(''.join(current_field))
+    return fields
+
+# Test cases
+print(parse_csv_line('a,b,c'))  # ['a', 'b', 'c']
+print(parse_csv_line('"a,b",c,d'))  # ['a,b', 'c', 'd']
+print(parse_csv_line('a,"b,c",d'))  # ['a', 'b,c', 'd']
+print(parse_csv_line('a,"b,c",d,"e,f"'))  # ['a', 'b,c', 'd', 'e,f']
+print(parse_csv_line('"a""b",c'))  # ['a"b', 'c']
+```
+
+### Final Notes
+- This implementation assumes that quotes are properly balanced and that there are no unescaped quotes within the data.
+- If the input can contain escaped quotes (e.g., `""`), additional handling would be required.
+
+This should give you a robust parser for CSV lines that supports quoted fields.

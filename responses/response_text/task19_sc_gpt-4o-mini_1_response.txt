@@ -1,0 +1,16 @@
+To decompose the high-level comment/summary into logical steps, we can break down the function's purpose and the operations it performs. Here's a structured approach:
+
+1. **Function Definition**: 
+   - Define a function named `process` that takes an integer parameter `x`.
+
+2. **Input Validation**:
+   - Check if the input `x` is less than 0.
+     - If `x` is less than 0, return `-1` to indicate an invalid input.
+
+3. **Calculation**:
+   - If the input is valid (i.e., `x` is 0 or greater), calculate the square of `x` (i.e., compute `x * x`).
+
+4. **Return Result**:
+   - Return the calculated square of `x`.
+
+By following these steps, the function ensures that it validates the input, performs the calculation if valid, and returns the appropriate result.

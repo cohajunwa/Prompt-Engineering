@@ -1,0 +1,46 @@
+The script has a few issues that need to be addressed:
+
+1. **Indentation Error**: The line `clean = clean_line(line)` inside the `for` loop in the `count_words` function is not properly indented.
+2. **Missing Function Implementation**: The `clean_line` function is incomplete and doesn't perform any operations.
+3. **Syntax Error**: There is a typo in the `if __name__ == ’__main__ ’:` line; it should use straight single quotes instead of curly quotes.
+
+Here is the corrected script:
+
+```python
+# file_processor.py - Incomplete script for processing text files
+
+import string
+
+def load_file(filepath):
+    with open(filepath, 'r') as f:
+        return f.readlines()
+
+def clean_line(line):
+    # Remove punctuation and make lowercase
+    return line.translate(str.maketrans('', '', string.punctuation)).lower()
+
+def count_words(lines):
+    word_counts = {}
+    for line in lines:
+        clean = clean_line(line)
+        for word in clean.split():
+            word_counts[word] = word_counts.get(word, 0) + 1
+    return word_counts
+
+def main():
+    filepath = 'input.txt'
+    lines = load_file(filepath)
+    counts = count_words(lines)
+    for word, count in sorted(counts.items()):
+        print(f"{word}: {count}")
+
+if __name__ == '__main__':
+    main()
+```
+
+### Explanation of Changes:
+1. **Indentation**: Fixed the indentation in the `count_words` function.
+2. **Function Implementation**: Implemented the `clean_line` function to remove punctuation and convert the line to lowercase.
+3. **Syntax Correction**: Changed the `if __name__ == ’__main__ ’:` line to use straight single quotes.
+
+With these changes, the script should work as intended for processing the text file and counting the words.
