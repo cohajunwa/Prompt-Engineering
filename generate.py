@@ -3,6 +3,7 @@ import json
 import os
 import sys
 
+from evaluate import get_cosine_similarity, get_bleu_4_score
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -79,6 +80,24 @@ def parse_json_file(json_file):
 
     return data["strategy"], data["task_name"], data["prompt_files"]
 
+def include_comparison_scores(responses, models):
+    """Gets cosine similarity and BLEU scores for models outputs and updates responses dictionary
+    Args:
+        responses (dict): Dictionary consisting of task name, strategy, and model outputs
+        models (list[str]): List of models
+    """
+    responses["bleu_scores"] = []
+    responses["similarity_scores"] = []
+    
+    for output1, output2 in zip(responses[f"{models[0]}_output"], responses[f"{models[1]}_output"]):
+        bleu_score = get_bleu_4_score(output1, output2)
+        similarity_score = get_cosine_similarity(output1, output2)
+
+        responses["bleu_scores"].append(bleu_score)
+        responses["similarity_scores"].append(similarity_score)
+    
+    return responses
+   
 def save_responses(responses, models):
     """
     Saves models' response data into JSON and text files
@@ -214,6 +233,7 @@ def run(task_file, models, client):
     elif strategy == "self_consistency" or strategy == "prompt_chaining":
         responses = run_multiple_prompts(strategy, task_name, prompt_files, models, client)
 
+    responses = include_comparison_scores(responses, models)
     save_responses(responses, models)
 
 if __name__ == '__main__':
